@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>KCCC Leads Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Same palette tokens as the student kit (FSI crest: chocolate brown + metallic gold). */
+:root{
+  --bg:#F7F4EF; --surface:#FFFFFF; --surface2:#F8F5F0; --ink:#2B1A0E; --muted:#6C5B4C; --line:#E8DFD3;
+  --brand:#4A2812; --brand2:#6B3C1A; --gold:#B98A2E; --gold-text:#8A6414; --gold-hi:#E0BC62; --gold-soft:#F9EDCC; --on-gold:#2A1A06;
+  --good:#1B7F4B; --good-soft:#E3F4EA; --bad:#B3402F; --bad-soft:#FBE9E5; --bar:#B98A2E;
+  --shadow:0 1px 2px rgba(43,26,14,.06),0 10px 28px rgba(43,26,14,.08);
+  --display:'Playfair Display','Georgia',serif; --body:'Figtree','Segoe UI',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#150C06; --surface:#22140A; --surface2:#1B1008; --ink:#F4EADD; --muted:#BDA98F; --line:#3A2718;
+  --brand:#2C180B; --brand2:#4A2812; --gold:#D4A94A; --gold-text:#E3BC66; --gold-soft:#33260F; --bar:#D4A94A;
+  --good:#52C98A; --good-soft:#12301F; --bad:#F08A78; --bad-soft:#38201A; --shadow:0 1px 2px rgba(0,0,0,.5);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#150C06; --surface:#22140A; --surface2:#1B1008; --ink:#F4EADD; --muted:#BDA98F; --line:#3A2718;
+  --brand:#2C180B; --brand2:#4A2812; --gold:#D4A94A; --gold-text:#E3BC66; --gold-soft:#33260F; --bar:#D4A94A;
+  --good:#52C98A; --good-soft:#12301F; --bad:#F08A78; --bad-soft:#38201A; --shadow:0 1px 2px rgba(0,0,0,.5);color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);margin:0;padding:0 16px 48px}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);line-height:1.2;margin:0}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+.page{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;flex-wrap:wrap}
+.hdr .l{display:flex;align-items:center;gap:14px}
+.plate{background:#FFFDF8;border-radius:12px;padding:3px 10px;border:1px solid var(--line)}
+.plate img{display:block;height:44px}
+.hdr h1{font-size:24px}
+.ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.in{padding:9px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);min-width:0}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 16px;border-radius:10px;background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--on-gold);font-weight:800;text-align:center}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:700}
+.btn.ghost:hover{border-color:var(--gold)}
+.btn.bad{background:transparent;color:var(--bad);border:1.5px solid var(--bad);font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi,.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);min-width:0}
+.kpi span{display:block;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.kpi b{font:700 30px var(--display);display:block;margin-top:4px}
+.card h2{font-size:20px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+.funnel{display:grid;grid-template-columns:minmax(150px,220px) 1fr 70px 70px 80px;gap:0 12px;align-items:center}
+.funnel .h{font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-bottom:6px;border-bottom:1px solid var(--line)}
+.funnel .c{padding:9px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.funnel .num{text-align:right}
+.track{position:relative;height:20px}
+.track i{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0;background:var(--bar);min-width:2px}
+.track i.o{opacity:.28}
+.track:hover i{filter:brightness(1.08)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-bottom:10px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--bar);margin-right:6px;vertical-align:-1px}
+.legend span.o::before{opacity:.28}
+.drop{font-weight:700}
+.drop.hi{color:var(--bad)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;background:var(--gold-soft);color:var(--gold-text)}
+.pill.sent{background:var(--good-soft);color:var(--good)}
+.pill.failed{background:var(--bad-soft);color:var(--bad)}
+tr.lead{cursor:pointer}
+tr.lead:hover td{background:var(--surface2)}
+.detail td{background:var(--surface2)}
+.dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.dgrid h3{font-size:16px;margin-bottom:6px}
+dl{margin:0;display:grid;grid-template-columns:140px 1fr;gap:4px 12px}
+dt{color:var(--muted);font-weight:700}
+dd{margin:0}
+pre{white-space:pre-wrap;margin:0;font:13px/1.5 var(--body)}
+.muted{color:var(--muted)}
+.empty{padding:24px;text-align:center;color:var(--muted)}
+.err{color:var(--bad)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.funnel{grid-template-columns:110px 1fr 46px 46px 56px;font-size:13.5px}.dgrid{grid-template-columns:1fr}dl{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="hdr">
+    <div class="l"><span class="plate"><img id="logo" alt="Finishing School India"></span><h1>Career Kit · Leads &amp; analytics</h1></div>
+    <div class="ctrl">
+      <label class="sr" for="days">Date range</label>
+      <select class="in" id="days"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="0">All time</option></select>
+      <button class="btn ghost" id="refresh" type="button">Refresh</button>
+      <button class="btn ghost" id="theme" type="button">Theme</button>
+    </div>
+  </header>
+
+  <section class="kpis" aria-label="Summary">
+    <div class="kpi"><span>Visitors</span><b id="k_vis">–</b></div>
+    <div class="kpi"><span>Profiles completed</span><b id="k_prof">–</b></div>
+    <div class="kpi"><span>Enquiries</span><b id="k_enq">–</b></div>
+    <div class="kpi"><span>Visitor → enquiry</span><b id="k_conv">–</b></div>
+  </section>
+
+  <section class="card">
+    <h2>Drop-off by level</h2>
+    <p class="sub">Unique visitors who opened and completed each level. Drop-off is the share who opened a level but did not complete it.</p>
+    <div class="legend" aria-hidden="true"><span class="o">Opened</span><span>Completed</span></div>
+    <div class="funnel" id="funnel" role="table" aria-label="Drop-off by level"></div>
+  </section>
+
+  <section class="card">
+    <div class="hdr" style="padding:0;margin-bottom:10px">
+      <div><h2>Enquiries</h2><p class="sub" style="margin:0">Click a row for the full career snapshot and answers.</p></div>
+      <div class="ctrl">
+        <label class="sr" for="q">Search enquiries</label>
+        <input class="in" id="q" type="search" placeholder="Search name, phone, college…">
+        <label class="sr" for="fstatus">Filter by status</label>
+        <select class="in" id="fstatus"><option value="">All statuses</option></select>
+        <a class="btn" href="/api/admin/leads.csv" download>Export CSV</a>
+      </div>
+    </div>
+    <div class="scroll"><table>
+      <thead><tr><th>Received</th><th>Name</th><th>Phone</th><th>Interest</th><th>Wants to know</th><th>District</th><th>Status</th><th>CRM</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
+    </table></div>
+  </section>
+</div>
+<script src="/assets/logos.js"></script>
+<script>
+var $=function(s){return document.querySelector(s)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var LV=['Start your career profile','Discover yourself','Explore the commerce world','Decide your next step','Choose a career area','Your career roadmap','Connect with an expert'];
+var D={leads:[],statuses:[],open:null};
+try{$('#logo').src=LOGO.fsi}catch(e){}
+function api(u,o){return fetch(location.origin+u,Object.assign({credentials:'same-origin'},o||{})).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function fmt(d){var x=new Date(d);return x.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})+' '+x.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}
+
+function loadAnalytics(){
+  api('/api/admin/analytics?days='+$('#days').value).then(function(a){
+    $('#k_vis').textContent=a.visitors;$('#k_prof').textContent=a.levels[0].completed;$('#k_enq').textContent=a.enquiries;
+    $('#k_conv').textContent=a.visitors?(Math.round(a.enquiryVisitors/a.visitors*1000)/10)+'%':'–';
+    var max=Math.max(1,a.visitors,a.levels.reduce(function(m,l){return Math.max(m,l.opened)},0));
+    $('#funnel').innerHTML='<div class="h" role="columnheader">Level</div><div class="h" role="columnheader"><span class="sr">Bar</span></div><div class="h num" role="columnheader">Opened</div><div class="h num" role="columnheader">Done</div><div class="h num" role="columnheader">Drop-off</div>'+
+      a.levels.map(function(l){var tip='Level '+l.level+': '+l.opened+' opened, '+l.completed+' completed'+(l.dropOff!=null?', '+l.dropOff+'% drop-off':'');
+        return '<div class="c" role="cell"><b>'+l.level+'.</b> '+esc(LV[l.level-1])+'</div><div class="c" role="cell" aria-hidden="true"><div class="track" title="'+esc(tip)+'"><i class="o" style="width:'+(l.opened/max*100)+'%"></i><i style="width:'+(l.completed/max*100)+'%"></i></div></div><div class="c num" role="cell">'+l.opened+'</div><div class="c num" role="cell">'+l.completed+'</div><div class="c num drop'+(l.dropOff>=40?' hi':'')+'" role="cell">'+(l.dropOff==null?'–':l.dropOff+'%')+'</div>'}).join('');
+  }).catch(function(e){$('#funnel').innerHTML='<p class="err">Could not load analytics ('+esc(e.message)+').</p>'});
+}
+function loadLeads(){
+  api('/api/admin/leads').then(function(d){D.leads=d.leads;
+    if(!D.statuses.length){D.statuses=d.statuses;$('#fstatus').innerHTML+=d.statuses.map(function(s){return '<option>'+s+'</option>'}).join('')}
+    renderLeads()}).catch(function(e){$('#rows').innerHTML='<tr><td colspan="8" class="err">Could not load enquiries ('+esc(e.message)+').</td></tr>'});
+}
+function renderLeads(){
+  var q=$('#q').value.trim().toLowerCase(),fs=$('#fstatus').value;
+  var list=D.leads.filter(function(l){if(fs&&l.status!==fs)return false;if(!q)return true;
+    return [l.ref,l.contact.name,l.contact.phone,l.profile.college,l.profile.district,l.contact.topic].join(' ').toLowerCase().indexOf(q)>-1});
+  if(!list.length){$('#rows').innerHTML='<tr><td colspan="8" class="empty">'+(D.leads.length?'No enquiries match.':'No enquiries yet.')+'</td></tr>';return}
+  $('#rows').innerHTML=list.map(function(l){var open=D.open===l.id;
+    return '<tr class="lead" data-id="'+l.id+'" tabindex="0" aria-expanded="'+open+'"><td>'+fmt(l.createdAt)+'<div class="muted small">'+esc(l.ref)+'</div></td><td><b>'+esc(l.contact.name)+'</b><div class="muted">'+esc([l.profile.course,l.profile.year].filter(Boolean).join(', '))+'</div></td><td><a href="tel:'+esc(l.contact.phone.replace(/[^\d+]/g,''))+'">'+esc(l.contact.phone)+'</a></td><td>'+esc(l.contact.topic)+'</td><td>'+esc(l.contact.ask)+'</td><td>'+esc(l.profile.district)+'</td><td><select class="in" data-status="'+l.id+'" aria-label="Status for '+esc(l.contact.name)+'">'+D.statuses.map(function(s){return '<option'+(s===l.status?' selected':'')+'>'+s+'</option>'}).join('')+'</select></td><td><span class="pill '+esc(l.crm&&l.crm.status)+'">'+esc(l.crm&&l.crm.status)+'</span></td></tr>'+
+      (open?'<tr class="detail"><td colspan="8">'+detail(l)+'</td></tr>':'')}).join('');
+}
+function detail(l){var p=l.profile,r=l.results;
+  var kv=function(rows){return '<dl>'+rows.filter(function(x){return x[1]}).map(function(x){return '<dt>'+x[0]+'</dt><dd>'+esc(x[1])+'</dd>'}).join('')+'</dl>'};
+  return '<div class="dgrid"><div><h3>Profile</h3>'+kv([['College',p.college],['Course',p.course+(p.year?', '+p.year+' year':'')],['District',p.district],['Mindset',p.mindset]])+
+    '<h3 style="margin-top:14px">Results</h3>'+kv([['Suggested areas',r.suggestedAreas.join(' · ')],['Preferred pathway',r.preferredPath],['Area explored',r.exploredArea],['Compared',r.compareAreas.join(' · ')],['Concern tip',r.concernTip]])+
+    '<h3 style="margin-top:14px">Consent</h3>'+kv([['Given',fmt(l.consent.at)],['Notice version',l.consent.noticeVersion]])+
+    '<h3 style="margin-top:14px">Counsellor note</h3><textarea class="in" style="width:100%;min-height:70px" data-note="'+l.id+'" aria-label="Counsellor note">'+esc(l.note)+'</textarea><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn ghost" type="button" data-save="'+l.id+'">Save note</button><button class="btn bad" type="button" data-del="'+l.id+'">Delete enquiry</button></div></div>'+
+    '<div><h3>Answers</h3>'+(l.answers.length?'<dl>'+l.answers.map(function(a){return '<dt>'+esc(a.level)+'</dt><dd><span class="muted">'+esc(a.q)+'</span><br>'+esc(a.a)+'</dd>'}).join('')+'</dl>':'<p class="muted">None recorded.</p>')+'</div></div>';
+}
+function patch(id,body){return api('/api/admin/leads/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){var i=D.leads.findIndex(function(l){return l.id===id});if(i>-1)D.leads[i]=r.lead})}
+document.addEventListener('click',function(e){var t=e.target;
+  if(t.dataset.save){patch(t.dataset.save,{note:$('[data-note="'+t.dataset.save+'"]').value}).then(function(){t.textContent='Saved'},function(){t.textContent='Save failed'});return}
+  if(t.dataset.del){var l=D.leads.find(function(x){return x.id===t.dataset.del});if(!confirm('Permanently delete the enquiry from '+l.contact.name+'? This cannot be undone.'))return;
+    api('/api/admin/leads/'+l.id,{method:'DELETE'}).then(function(){D.leads=D.leads.filter(function(x){return x.id!==l.id});D.open=null;renderLeads();loadAnalytics()},function(){alert('Delete failed')});return}
+  if(t.closest('select,a,textarea,button'))return;
+  var row=t.closest('tr.lead');if(row){D.open=D.open===row.dataset.id?null:row.dataset.id;renderLeads()}
+});
+document.addEventListener('keydown',function(e){var row=e.target.closest&&e.target.closest('tr.lead');if(row&&e.target===row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();D.open=D.open===row.dataset.id?null:row.dataset.id;renderLeads();var r=$('tr.lead[data-id="'+row.dataset.id+'"]');if(r)r.focus()}});
+document.addEventListener('change',function(e){if(e.target.dataset.status)patch(e.target.dataset.status,{status:e.target.value}).catch(function(){alert('Status update failed')})});
+$('#q').addEventListener('input',renderLeads);$('#fstatus').addEventListener('change',renderLeads);
+$('#days').addEventListener('change',loadAnalytics);
+$('#refresh').addEventListener('click',function(){loadAnalytics();loadLeads()});
+$('#theme').addEventListener('click',function(){var r=document.documentElement,cur=r.getAttribute('data-theme');var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.setAttribute('data-theme',dark?'light':'dark')});
+loadAnalytics();loadLeads();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "kerala-commerce-career-kit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kerala Commerce Career Connection Kit by Finishing School India: student career kit, enquiry backend, admin leads view and level analytics.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
