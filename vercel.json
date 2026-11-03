@@ -1,7 +1,6 @@
 {
-  "buildCommand": "",
-  "functions": {
-    "api/index.js": { "includeFiles": "{public,admin}/**" }
-  },
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node", "config": { "includeFiles": ["public/**", "admin/**"] } }
+  ],
+  "routes": [{ "src": "/(.*)", "dest": "/server.js" }]
 }
