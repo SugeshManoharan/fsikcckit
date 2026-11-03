@@ -13,13 +13,15 @@ const crypto = require('crypto');
 loadDotEnv(path.join(__dirname, '.env'));
 const PORT = +process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
-const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, 'data'));
+// On Vercel the deployment is read-only; only /tmp is writable (and it is wiped between cold starts).
+const ON_VERCEL = !!process.env.VERCEL;
+const DATA_DIR = path.resolve(process.env.DATA_DIR || (ON_VERCEL ? '/tmp/kccc-data' : path.join(__dirname, 'data')));
 const ADMIN_USER = process.env.ADMIN_USER || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const WHATSAPP_NUMBER = (process.env.WHATSAPP_NUMBER || '').replace(/\D/g, '');
 const CRM_WEBHOOK_URL = process.env.CRM_WEBHOOK_URL || '';
 const CRM_WEBHOOK_SECRET = process.env.CRM_WEBHOOK_SECRET || '';
-const TRUST_PROXY = process.env.TRUST_PROXY === '1';
+const TRUST_PROXY = process.env.TRUST_PROXY === '1' || ON_VERCEL;
 // Origins allowed to call the public API cross-origin (e.g. where the standalone HTML is hosted). Comma-separated, or *.
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim().replace(/\/$/, '')).filter(Boolean);
 const NOTICE_VERSION = '2026-11-v1';
@@ -28,7 +30,7 @@ const PUBLIC_DIR = path.join(__dirname, 'public');
 const ADMIN_HTML = path.join(__dirname, 'admin', 'admin.html');
 const LEADS_FILE = path.join(DATA_DIR, 'leads.json');
 const EVENTS_FILE = path.join(DATA_DIR, 'events.jsonl');
-fs.mkdirSync(DATA_DIR, { recursive: true });
+try { fs.mkdirSync(DATA_DIR, { recursive: true }); } catch (e) { console.error('Cannot create DATA_DIR ' + DATA_DIR, e.message); }
 
 function loadDotEnv(file) {
   let txt; try { txt = fs.readFileSync(file, 'utf8'); } catch (e) { return; }
@@ -215,7 +217,7 @@ async function serveFile(res, file, cache) {
 }
 
 /* ---------- router ---------- */
-const server = http.createServer(async (req, res) => {
+async function handler(req, res) {
   const url = new URL(req.url, 'http://x');
   const p = url.pathname, method = req.method;
   try {
@@ -291,7 +293,8 @@ const server = http.createServer(async (req, res) => {
     if (code === 500) console.error(e);
     if (!res.headersSent) json(res, code, { error: code === 413 ? 'Request too large' : code === 400 ? 'Invalid request' : 'Server error' });
   }
-});
+}
+const server = http.createServer(handler);
 
 if (require.main === module) {
   server.listen(PORT, HOST, () => {
@@ -300,4 +303,5 @@ if (require.main === module) {
     if (!CRM_WEBHOOK_URL) console.log('CRM_WEBHOOK_URL not set: leads are stored locally only.');
   });
 }
-module.exports = server;
+module.exports = handler;   // Vercel calls this as a (req, res) function
+module.exports.server = server;
