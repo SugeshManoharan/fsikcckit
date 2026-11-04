@@ -105,8 +105,8 @@ const str = (v, max) => (typeof v === 'string' ? v : v == null ? '' : String(v))
 const oneOf = (v, list, dflt) => list.indexOf(v) > -1 ? v : dflt;
 
 /* ---------- leads ---------- */
-const TOPICS = ['Accounting', 'Finance', 'Management', 'Other'];
-const ASKS = ['Career guidance', 'Course details', 'Fees', 'Training options'];
+const TOPICS = ['Accounting', 'Finance', 'Management', 'Taxation', 'Professional Qualification', 'Other / Not sure'];
+const ASKS = ['Career guidance', 'Training options'];
 const STATUSES = ['new', 'contacted', 'enrolled', 'closed'];
 
 function cleanLead(b) {
@@ -125,12 +125,12 @@ function cleanLead(b) {
       status: 'new',
       note: '',
       profile: { name, college: str(p.college, 150), course: str(p.course, 20), year: str(p.year, 10), district: str(p.district, 40), mindset: str(p.mind || p.mindset, 120) },
-      contact: { name, phone, topic: oneOf(c.topic, TOPICS, 'Other'), ask: oneOf(c.ask, ASKS, 'Career guidance') },
+      contact: { name, phone, topic: oneOf(c.topic, TOPICS, 'Other / Not sure'), ask: oneOf(c.ask, ASKS, 'Career guidance') },
       results: {
         suggestedAreas: (Array.isArray(r.suggestedAreas) ? r.suggestedAreas : []).slice(0, 3).map(x => str(x, 60)),
         preferredPath: str(r.preferredPath, 80), exploredArea: str(r.exploredArea, 80),
         compareAreas: (Array.isArray(r.compareAreas) ? r.compareAreas : []).slice(0, 2).map(x => str(x, 60)),
-        concernTip: str(r.concernTip, 200)
+        concernTip: str(r.concernTip, 200), aiSummary: str(r.aiSummary, 1200)
       },
       answers: (Array.isArray(b.answers) ? b.answers : []).slice(0, 40).map(a => ({ level: str(a && a.level, 10), q: str(a && a.q, 200), a: str(a && a.a, 400) })),
       summary: str(b.summary, 3000),

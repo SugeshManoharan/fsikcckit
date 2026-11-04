@@ -13,6 +13,7 @@
   --brand:#4A2812; --brand2:#6B3C1A; --brand-ink:#FFFFFF;
   --gold:#B98A2E; --gold-text:#8A6414; --gold-hi:#E0BC62; --gold-soft:#F9EDCC; --on-gold:#2A1A06;
   --good:#1B7F4B; --good-soft:#E3F4EA; --bad:#B3402F; --bad-soft:#FBE9E5;
+  --cta:#2E6B1F; --cta-hi:#6FA83F; --cta-ink:#FFFFFF; --cta-line:#DCCB8F;
   --shadow:0 1px 2px rgba(43,26,14,.06),0 10px 28px rgba(43,26,14,.08);
   --display:'Playfair Display','Georgia',serif; --body:'Figtree','Segoe UI',system-ui,sans-serif;
 }
@@ -20,11 +21,13 @@
   --bg:#150C06; --surface:#22140A; --surface2:#1B1008; --ink:#F4EADD; --muted:#BDA98F; --line:#3A2718;
   --brand:#2C180B; --brand2:#4A2812; --gold:#D4A94A; --gold-text:#E3BC66; --gold-soft:#33260F;
   --good:#52C98A; --good-soft:#12301F; --bad:#F08A78; --bad-soft:#38201A;
+  --cta:#2F7D22; --cta-hi:#7CC24A; --cta-ink:#FFFFFF; --cta-line:#E3BC66;
   --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px rgba(0,0,0,.4);color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#150C06; --surface:#22140A; --surface2:#1B1008; --ink:#F4EADD; --muted:#BDA98F; --line:#3A2718;
   --brand:#2C180B; --brand2:#4A2812; --gold:#D4A94A; --gold-text:#E3BC66; --gold-soft:#33260F;
   --good:#52C98A; --good-soft:#12301F; --bad:#F08A78; --bad-soft:#38201A;
+  --cta:#2F7D22; --cta-hi:#7CC24A; --cta-ink:#FFFFFF; --cta-line:#E3BC66;
   --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px rgba(0,0,0,.4);color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -40,19 +43,11 @@ p{margin:0}
 .theme{all:unset;cursor:pointer;position:fixed;z-index:40;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);box-shadow:var(--shadow)}
 .theme:hover{border-color:var(--gold);color:var(--ink)}
 .theme svg{width:20px;height:20px;pointer-events:none}
-.hero{background:linear-gradient(135deg,var(--brand) 0%,var(--brand2) 100%);color:#fff;border-radius:24px;padding:clamp(24px,5vw,56px);position:relative;overflow:hidden;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,4vw,48px);align-items:center}
-.hero-logo{background:#FFFDF8;border-radius:22px;padding:16px 20px;border:1px solid rgba(224,188,98,.55);box-shadow:0 14px 36px rgba(0,0,0,.28)}
-.hero-logo img{display:block;width:clamp(160px,22vw,290px);height:auto}
-.hero::after{content:"";position:absolute;right:-70px;bottom:-90px;width:340px;height:340px;border-radius:50%;border:1.5px solid rgba(224,188,98,.45);box-shadow:0 0 0 30px rgba(224,188,98,.07),0 0 0 62px rgba(224,188,98,.05)}
-.hero>*{position:relative;z-index:1}
+.hero-banner{position:relative;display:block;border-radius:24px;overflow:hidden;box-shadow:var(--shadow);background:var(--brand)}
+.hero-banner img{display:block;width:100%;height:auto}
+.hero-cta{all:unset;box-sizing:border-box;cursor:pointer;position:absolute;left:6%;top:70.5%;width:42%;height:17%;border-radius:999px}
 .eyebrow{font:700 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text);display:flex;align-items:center;gap:10px}
 .eyebrow::before{content:"";width:24px;height:3px;background:var(--gold);border-radius:2px;flex:none}
-.hero .eyebrow{color:var(--gold-hi)}
-.hero h1{font-size:clamp(32px,5.6vw,58px);font-weight:800;margin:16px 0 14px;max-width:18ch}
-.hero p{max-width:60ch;opacity:.9;font-size:17px}
-.hero .by{margin-top:12px;font-weight:700;color:var(--gold-hi)}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 28px}
-.chips span{padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.28);font-size:13px;font-weight:600}
 .sect{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
 .sect h2{font-size:clamp(24px,3.4vw,32px)}
 .hubgrid{display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
@@ -77,7 +72,7 @@ p{margin:0}
 .foot{text-align:center;color:var(--muted);font-size:13px;padding-top:8px}
 
 /* buttons */
-.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:12px;background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--on-gold);font-weight:800;transition:transform .12s,filter .12s;text-align:center}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:12px;background:linear-gradient(135deg,var(--cta-hi),var(--cta));border:1.5px solid var(--cta-line);color:var(--cta-ink);font-weight:800;transition:transform .12s,filter .12s;text-align:center}
 .btn:hover{filter:brightness(1.06)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled]{background:var(--line);color:var(--muted);cursor:not-allowed;filter:none}
@@ -115,14 +110,21 @@ p{margin:0}
 .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .quote{border-left:4px solid var(--gold);background:var(--gold-soft);padding:14px 18px;border-radius:0 12px 12px 0;font-size:15.5px}
+.aisum{background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.aisum .tag{display:inline-flex;align-items:center;gap:6px;font:800 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--gold-text)}
+.aisum p{font-size:15.5px;line-height:1.55}
 .muted{color:var(--muted)}
 .small{font-size:13.5px}
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field label,.lbl{font-weight:700;font-size:14px}
 .in{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface2);min-width:0}
 .in:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.in.err{border-color:var(--bad);box-shadow:0 0 0 3px var(--bad-soft)}
+.card.err{outline:2px solid var(--bad);outline-offset:4px;border-radius:16px}
 textarea.in{resize:vertical;min-height:80px}
 .q{display:flex;flex-direction:column;gap:10px;padding-block:16px;border-top:1px solid var(--line)}
+.q.err{background:var(--bad-soft);border-radius:12px;padding-inline:12px;margin-inline:-12px}
+.q.err h3{color:var(--bad)}
 .q:first-child{border-top:0;padding-top:0}
 .q:last-child{padding-bottom:0}
 .q h3{font:700 16.5px/1.35 var(--body);margin:0}
@@ -213,9 +215,6 @@ pre.sum{white-space:pre-wrap;text-align:left;background:var(--surface2);border:1
   .mf{padding-inline:16px}
   .mf .btn{flex:1}
   .kv{grid-template-columns:1fr}.kv dt{margin-top:6px}
-  .hero{grid-template-columns:minmax(0,1fr)}
-  .hero-logo{order:-1;justify-self:start;padding:10px 14px;border-radius:16px}
-  .hero-logo img{width:150px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -231,8 +230,8 @@ pre.sum{white-space:pre-wrap;text-align:left;background:var(--surface2);border:1
 var LV=[
  ['Start your career profile','Tell us about you'],
  ['Discover yourself','Interests, strengths and goals'],
- ['Explore the commerce world','What careers really look like'],
- ['Decide your next step','Five pathways and your direction'],
+ ['Decide your next step','Five pathways to explore'],
+ ['Career direction discovery','Find your direction and interests'],
  ['Choose a career area','Seven areas to explore'],
  ['Your career roadmap','Skills, courses and qualifications'],
  ['Connect with an expert','Get 1-on-1 guidance']];
@@ -259,21 +258,6 @@ var WORRY=[
  'Use the roadmap for your top area, then ask an expert to fill the gaps.',
  'Many qualifications can be studied part-time or online while you work. Ask an expert about routes.'];
 
-var QUIZ=[
- {id:'x1',t:'Do commerce graduates have opportunities in different types of companies?',o:['Yes','No','Not sure']},
- {id:'x2',t:'Can a B.Com or BBA fresher apply for a job without completing another qualification?',o:['Yes, for suitable entry-level roles','No, another qualification is always compulsory','Not sure']},
- {id:'x3',t:'Which work areas would you like to know more about?',multi:1,o:[['Accounting and taxation',{A:2}],['Finance and banking',{B:2}],['Management and marketing',{C:2}],['Data and business technology',{A:1,B:1}],['Professional qualifications',{D:2}],['I am not sure yet']]},
- {id:'x4',t:'Can commerce graduates build a career outside Kerala or elsewhere in India?',o:['Yes','No','Not sure']},
- {id:'x5',t:'Can commerce graduates explore opportunities abroad?',o:['Yes, depending on the role and requirements','Yes, a commerce degree guarantees a job abroad','No','Not sure']},
- {id:'x6',t:'Do all professional qualifications lead to the same type of career?',o:['Yes','No, they have different purposes','Not sure']},
- {id:'x7',t:'Which professional qualifications would you like to understand?',multi:1,o:[['CA / CMA'],['ACCA / CPA'],['CIA — Certified Internal Auditor'],['EA — Enrolled Agent'],['US CMA'],['More than one / I need guidance']]}];
-var QMAP={'CA / CMA':['ca','cma'],'ACCA / CPA':['acca','cpa'],'CIA — Certified Internal Auditor':['cia'],'EA — Enrolled Agent':['ea']};
-var KNOW=[
- ['Commerce is needed in different industries','Companies in healthcare, retail, manufacturing, IT, banking and other sectors need people for accounting, finance, taxation, business operations and management.'],
- ['A degree is a starting point—not the whole journey','Some entry-level jobs accept B.Com or BBA graduates. Other roles require specialized knowledge, additional qualifications or experience.'],
- ['Career opportunities extend beyond Kerala','Graduates can explore opportunities across India and abroad. Eligibility, local regulations, employer requirements and experience vary by role and country.'],
- ['Practical skills matter','Excel, accounting software, taxation basics, communication soft skills and real-work experience can help you prepare for relevant entry-level roles.'],
- ['Different careers require different routes','Professional qualifications, software training, higher studies and direct job applications serve different purposes. You do not need to pursue every qualification.']];
 
 var PATHS={
  A:{n:'Continue my studies',s:'Degrees, professional courses and specialisations',l:['M.Com and MBA.','CA, CMA, ACCA and other professional qualifications, with eligibility requirements.','Banking, finance, taxation and business analytics specializations.','Regular degree, distance education and online learning options.']},
@@ -285,7 +269,9 @@ var DIRQ=[
  {id:'d1',t:'What is your next career priority?',o:[['Higher Studies',{A:2}],['Get a Job',{B:2}],['Develop Professional Skills',{C:2}],['Government / Banking Exams',{D:2}],['Start a Business / Explore Other Careers',{E:2}],['Still Exploring']]},
  {id:'d2',t:'What makes your job application stronger?',o:[['Degree Certificate'],['Commerce Knowledge',{A:1}],['Practical Skills',{C:1}],['Degree + Practical Skills',{C:1,B:1}],['Not Sure']]},
  {id:'d3',t:'Can you perform practical accounting tasks?',o:[['Yes, independently',{B:1}],['I know the theory, but need practice',{C:2}],['Not yet',{C:2}]]},
- {id:'d4',t:'Which preparation would you prefer?',o:[['Professional Training + Practical Projects',{C:2}],['Higher Education',{A:2}],['Competitive Exam Preparation',{D:2}],['Internship / Work Experience',{B:2}],['Business Development',{E:2}],['Career Guidance']]}];
+ {id:'d4',t:'Which preparation would you prefer?',o:[['Professional Training + Practical Projects',{C:2}],['Higher Education',{A:2}],['Competitive Exam Preparation',{D:2}],['Internship / Work Experience',{B:2}],['Business Development',{E:2}],['Career Guidance']]},
+ {id:'d5',t:'Which professional qualifications would you like to understand?',multi:1,o:[['CA / CMA'],['ACCA / CPA'],['CIA — Certified Internal Auditor'],['EA — Enrolled Agent'],['US CMA'],['Not Sure yet'],['Interested in More than one / I need guidance'],['Not interested in pursuing any Professional Course']]}];
+var QUALMAP={'CA / CMA':['ca','cma'],'ACCA / CPA':['acca','cpa'],'CIA — Certified Internal Auditor':['cia'],'EA — Enrolled Agent':['ea']};
 
 var AREAS={
  A:{n:'Accounting & Taxation',s:'Accounts, GST, tax and audit support'},
@@ -325,13 +311,13 @@ var QUALS=[
  {id:'cpa',n:'CPA — Certified Public Accountant (USA)',b:'Awarding body: US State Boards of Accountancy; exam delivered through the US CPA examination system.',g:['1–2 years','Several thousand US$'],scope:'US accounting standards, auditing, taxation, accounting and business analysis.',elig:'Education and licensing rules vary by US state or jurisdiction; specified accounting/business credits and verified experience may be required.',who:'Commerce and accounting graduates seeking US-focused accounting, audit and tax careers.',dur:'Often 1–2 years, depending on eligibility, exam pace and experience requirements.',fee:'Varies by jurisdiction; budget several thousand US dollars for evaluation, exams, review materials and licensing.',car:'US tax associate, auditor, financial accountant, reporting analyst, assurance professional.',cert:'The relevant US State Board of Accountancy after licensing requirements are met.'},
  {id:'acca',n:'ACCA — Association of Chartered Certified Accountants',b:'Awarding body: Association of Chartered Certified Accountants, United Kingdom.',g:['3–4 years','Paid in GBP'],scope:'Financial accounting, management accounting, audit, taxation, financial management, reporting and business strategy.',elig:'A-level equivalent entry requirements; Indian students should check country-specific entry criteria. Foundation-level routes are available.',who:'Commerce graduates and aspiring accountants interested in international finance careers.',dur:'Typically 3–4 years, including exams, ethics module and 36 months of relevant practical experience; exemptions may shorten the exam route.',fee:'Registration, annual subscription and exam fees are charged separately in GBP; total cost depends on exemptions, exam attempts, tuition and exchange rates.',car:'Financial accountant, auditor, management accountant, finance analyst, tax professional, finance manager.',cert:'Association of Chartered Certified Accountants (ACCA), after all membership requirements are completed.'}];
 var EXPERTS=[['Direct Career Consultation','1-on-1 counseling session for overall direction, course selection, and resolving career confusion and job-readiness.'],['Practical Accounting Guidance','Specialized guidance from Finishing School India on practical job-readiness accounting programs.'],['Professional Courses Guidance','Mentoring from ENS Global Education on CIA, EA, CMA (USA), CPA and other such global qualification roadmaps.']];
-var AREA_FORM={A:'Accounting',B:'Finance',C:'Management'};
+var AREA_FORM={A:'Accounting',B:'Finance',C:'Management',D:'Professional Qualification'};
 var INTRO_QUOTE="Commerce graduates can build careers in accounting, taxation, banking, finance, business management, marketing, analytics and professional services. Some opportunities begin with a degree and practical skills; others require additional qualifications, examinations or experience. Let's explore your options before choosing your direction.";
 
 /* ======================= STATE ======================= */
-var S={modal:null,sub:null,p:{name:'',college:'',course:'',year:'',district:'',mind:''},a:{},done:[],area:null,sel:null,aStep:0,cmp:[],idea:{},lead:{phone:'',topic:'',ask:'Career guidance',ok:false},sent:false,ref:'',wa:null,sending:false,privacy:false,dpage:0};
-try{var sv=localStorage.getItem('kccc2');if(sv){var o=JSON.parse(sv);if(o&&o.p){S.p=o.p;S.a=o.a||{};S.idea=o.idea||{};S.done=o.done||[];S.area=o.area||null;S.privacy=!!o.privacy;S.cmp=o.cmp||[];if(o.sent){S.sent=true;S.ref=o.ref||'';S.wa=o.wa||null;S.lead=Object.assign(S.lead,o.lead||{},{ok:false})}}}}catch(e){}
-function save(){try{localStorage.setItem('kccc2',JSON.stringify({p:S.p,a:S.a,idea:S.idea,done:S.done,area:S.area,privacy:S.privacy,cmp:S.cmp,sent:S.sent,ref:S.ref,wa:S.wa,lead:S.sent?{phone:S.lead.phone,topic:S.lead.topic,ask:S.lead.ask}:undefined}))}catch(e){}}
+var S={modal:null,sub:null,p:{name:'',college:'',course:'',year:'',district:'',mind:''},a:{},done:[],area:null,area2:null,sel:[],aStep:0,cmp:[],idea:{},lead:{phone:'',topic:'',ask:'Career guidance',ok:false},sent:false,ref:'',wa:null,sending:false,privacy:false,dpage:0};
+try{var sv=localStorage.getItem('kccc2');if(sv){var o=JSON.parse(sv);if(o&&o.p){S.p=o.p;S.a=o.a||{};S.idea=o.idea||{};S.done=o.done||[];S.area=o.area||null;S.area2=o.area2||null;S.privacy=!!o.privacy;S.cmp=o.cmp||[];if(o.sent){S.sent=true;S.ref=o.ref||'';S.wa=o.wa||null;S.lead=Object.assign(S.lead,o.lead||{},{ok:false})}}}}catch(e){}
+function save(){try{localStorage.setItem('kccc2',JSON.stringify({p:S.p,a:S.a,idea:S.idea,done:S.done,area:S.area,area2:S.area2,privacy:S.privacy,cmp:S.cmp,sent:S.sent,ref:S.ref,wa:S.wa,lead:S.sent?{phone:S.lead.phone,topic:S.lead.topic,ask:S.lead.ask}:undefined}))}catch(e){}}
 
 /* ======================= BACKEND & ANALYTICS ======================= */
 /* API base: '' = same server that serves this page. For the standalone HTML build, set window.KCCC_API to the deployed server URL. */
@@ -349,8 +335,9 @@ function ok(n){return !!S.done[n]}
 function highest(){var h=0;for(var i=1;i<=7;i++)if(S.done[i])h=i;return h}
 
 /* ======================= SCORING ======================= */
-function sumW(list,add){list.forEach(function(q){var i=S.a[q.id];if(i==null)return;var w=q.o[i][1];if(w)for(var k in w)add[k]=(add[k]||0)+w[k]})}
-function areaScores(){var sc={A:0,B:0,C:0,D:0,E:0,F:0};sumW(DISC1.concat(DISC2),sc);(S.a.x3||[]).forEach(function(i){var w=QUIZ[2].o[i][1];if(w)for(var k in w)sc[k]+=w[k]});return sc}
+function sumW(list,add){list.forEach(function(q){var i=S.a[q.id];if(i==null)return;
+  (q.multi?i:[i]).forEach(function(ix){var w=q.o[ix]&&q.o[ix][1];if(w)for(var k in w)add[k]=(add[k]||0)+w[k]})})}
+function areaScores(){var sc={A:0,B:0,C:0,D:0,E:0,F:0};sumW(DISC1.concat(DISC2),sc);return sc}
 function topAreas(){var sc=areaScores();return Object.keys(sc).filter(function(k){return sc[k]>0}).sort(function(a,b){return sc[b]-sc[a]}).slice(0,2)}
 function topPath(){var sc={A:0,B:0,C:0,D:0,E:0};sumW(DIRQ,sc);var r=Object.keys(sc).sort(function(a,b){return sc[b]-sc[a]});return sc[r[0]]>0?r[0]:null}
 
@@ -359,15 +346,27 @@ function opts(q){var cur=S.a[q.id];
   return '<div class="opts" role="'+(q.multi?'group':'radiogroup')+'">'+q.o.map(function(o,i){
     var label=Array.isArray(o)?o[0]:o;var on=q.multi?(cur||[]).indexOf(i)>-1:cur===i;var cls='opt'+(q.multi?' multi':'')+(on?' on':'');
     return '<button type="button" class="'+cls+'" data-act="pick" data-q="'+q.id+'" data-i="'+i+'" aria-pressed="'+on+'">'+esc(label)+'</button>'}).join('')+'</div>'}
-function question(q,n){var h='<section class="q"><h3>'+n+'. '+esc(q.t)+'</h3>'+(q.multi?'<span class="tag">Select all that apply</span>':'')+opts(q);
+function question(q,n){var h='<section class="q" id="q_'+q.id+'"><h3>'+n+'. '+esc(q.t)+'</h3>'+(q.multi?'<span class="tag">Select all that apply</span>':'')+opts(q);
   return h+'</section>'}
 function ticks(a){return '<ul class="ticks">'+a.map(function(x){return '<li><span>'+esc(x)+'</span></li>'}).join('')+'</ul>'}
 function answered(l){return l.filter(function(q){return S.a[q.id]!=null}).length}
 function btn(label,act,o){o=o||{};return '<button class="btn'+(o.cls?' '+o.cls:'')+'" type="button" data-act="'+act+'"'+(o.to?' data-to="'+o.to+'"':'')+(o.dis?' disabled':'')+'>'+label+(o.noarrow?'':' <span aria-hidden="true">→</span>')+'</button>'}
 function back(to){return '<button class="btn ghost" type="button" data-act="go" data-to="'+to+'">Back</button>'}
 function snapshot(){var p=S.p,top=topAreas(),tp=topPath(),A=S.area?AREAS[S.area]:null;
-  var rows=[['Student',(p.name||'—')+(p.course?' · '+p.course:'')+(p.year?', '+p.year:'')],['College',(p.college||'—')+(p.district?', '+p.district:'')],['Current mindset',p.mind?'“'+p.mind+'”':'—'],['Suggested areas',top.length?top.map(function(k){return AREAS[k].n}).join(' · '):'Still exploring'],['Preferred pathway',tp?'Path '+tp+': '+PATHS[tp].n:'Still exploring'],['Area you explored',A?A.n:'—']];
+  var rows=[['Student',(p.name||'—')+(p.course?' · '+p.course:'')+(p.year?', '+p.year:'')],['College',(p.college||'—')+(p.district?', '+p.district:'')],['Current mindset',p.mind?'“'+p.mind+'”':'—'],['Suggested areas',top.length?top.map(function(k){return AREAS[k].n}).join(' · '):'Still exploring'],['Preferred pathway',tp?'Path '+tp+': '+PATHS[tp].n:'Still exploring'],['Area you explored',A?A.n+(S.area2?' and '+AREAS[S.area2].n:''):'—']];
   var w=S.a.worry;return {rows:rows,tip:w!=null?WORRY[w]:null}}
+function aiSummary(){var p=S.p,top=topAreas(),tp=topPath(),A=S.area?AREAS[S.area]:null,sn=snapshot();
+  var name=p.name?p.name.split(' ')[0]:'there',parts=['Hi '+name+', here is your personalised career summary.'];
+  if(p.course||p.year)parts.push('You are currently pursuing '+(p.course||'your degree')+(p.year?', '+p.year+' year':'')+(p.college?' at '+p.college:'')+'.');
+  if(top.length)parts.push('Based on your answers, you show the strongest fit for '+top.map(function(k){return AREAS[k].n}).join(' and ')+'.');
+  if(tp)parts.push('Right now your preferred direction leans toward Path '+tp+': '+PATHS[tp].n+'.');
+  if(A)parts.push('You chose to explore '+A.n+(S.area2?' and '+AREAS[S.area2].n:'')+' in more depth.');
+  var d5=S.a.d5;
+  if(d5&&d5.length){var picks=d5.map(function(i){return DIRQ[4].o[i][0]}).filter(function(l){return !/Not Sure yet|Not interested/.test(l)});
+    if(picks.length)parts.push('You are curious about: '+picks.join(', ')+'.')}
+  if(sn.tip)parts.push(sn.tip);
+  parts.push('This is a starting point, not a final decision — a career expert from Finishing School India can help you turn it into a concrete plan.');
+  return parts.join(' ')}
 
 /* ======================= MODAL SCREENS ======================= */
 /* each returns {lv, t (title), b (body html), f (footer html), w (hint)} */
@@ -384,36 +383,28 @@ M.privacy=function(){var first=!S.privacy;
 M.profile=function(){var p=S.p,good=p.name.trim()&&p.college.trim()&&p.course&&p.year&&p.district&&p.mind;
   function sel(id,label,list,val,ph){return '<div class="field"><label for="'+id+'">'+label+'</label><select class="in" id="'+id+'" data-f="'+id+'"><option value="">'+ph+'</option>'+list.map(function(x){return '<option'+(x===val?' selected':'')+'>'+esc(x)+'</option>'}).join('')+'</select></div>'}
   return {lv:1,t:'Start your career profile',
-   b:'<div class="grid g2"><div class="card" style="display:flex;flex-direction:column;gap:14px"><div class="field"><label for="name">Student Name</label><input class="in" id="name" data-f="name" autocomplete="name" placeholder="Enter your name" value="'+esc(p.name)+'"></div><div class="field"><label for="college">College Name</label><input class="in" id="college" data-f="college" placeholder="Enter your College Name" value="'+esc(p.college)+'"></div><div class="grid g2">'+sel('course','Course',['B Com','BBA'],p.course,'B Com / BBA')+sel('year','Year of Study',['1st','2nd','3rd','4th'],p.year,'1st / 2nd / 3rd / 4th')+'</div>'+sel('district','District',DISTRICTS,p.district,'Select your district')+'</div>'+
-   '<div class="card"><h3 style="font-size:19px">Select Your Current Mind set:</h3><div class="mind">'+MINDSETS.map(function(m){return '<button type="button" class="opt'+(p.mind===m?' on':'')+'" data-act="mind" data-v="'+esc(m)+'" aria-pressed="'+(p.mind===m)+'">“'+esc(m)+'”</button>'}).join('')+'</div></div></div>'+
+   b:'<div class="grid g2"><div class="card" style="display:flex;flex-direction:column;gap:14px"><div class="field"><label for="name">Student Name</label><input class="in" id="name" data-f="name" autocomplete="name" placeholder="Enter your name" value="'+esc(p.name)+'"></div><div class="field"><label for="college">College Name</label><input class="in" id="college" data-f="college" placeholder="Enter your College Name" value="'+esc(p.college)+'"></div><div class="grid g2">'+sel('course','Course',['B Com','BBA','Commerce - Others'],p.course,'B Com / BBA')+sel('year','Year of Study',['1st','2nd','3rd','4th','Completed'],p.year,'1st / 2nd / 3rd / 4th')+'</div>'+sel('district','District',DISTRICTS,p.district,'Select your district')+'</div>'+
+   '<div class="card" id="mindCard" tabindex="-1"><h3 style="font-size:19px">Select Your Current Mind set:</h3><div class="mind">'+MINDSETS.map(function(m){return '<button type="button" class="opt'+(p.mind===m?' on':'')+'" data-act="mind" data-v="'+esc(m)+'" aria-pressed="'+(p.mind===m)+'">“'+esc(m)+'”</button>'}).join('')+'</div></div></div>'+
    '<p class="quote">“Your degree is one part of your future. Your interests, skills, choices, and career direction will shape what comes next. This journey will help you explore commerce careers and identify your next step.”</p>',
-   f:ok(1)?'<span></span><div class="r">'+btn('Next','go',{to:'disc1'})+'</div>':'<span class="hint" id="pHint">'+(good?'':'Fill in every field to continue')+'</span><div class="r">'+btn('Submit','submitProfile',{dis:!good,noarrow:1})+'</div>'}};
+   f:ok(1)?'<span></span><div class="r">'+btn('Next','go',{to:'disc1'})+'</div>':'<span class="hint" id="pHint">'+(good?'':'Fill in every field to continue')+'</span><div class="r">'+btn('Submit','submitProfile',{noarrow:1})+'</div>'}};
 function discScreen(list,n0,part){var all=answered(list)===list.length;
   return {lv:2,t:'Discover yourself before choosing your career',
    b:'<div class="card">'+list.map(function(q,i){return question(q,n0+i+1)}).join('')+'</div>',
-   f:(part?back('disc1'):back('profile'))+'<div class="r">'+(all?'':'<span class="hint">'+answered(list)+' of '+list.length+' answered</span>')+btn('Next Level','next',{dis:!all})+'</div>'}}
+   f:(part?back('disc1'):back('profile'))+'<div class="r">'+(all?'':'<span class="hint">'+answered(list)+' of '+list.length+' answered</span>')+btn('Next Level','next')+'</div>'}}
 M.disc1=function(){return discScreen(DISC1,0,0)};
 M.disc2=function(){return discScreen(DISC2,DISC1.length,1)};
-M.quiz=function(){var all=QUIZ.every(function(q){return q.multi?(S.a[q.id]||[]).length:S.a[q.id]!=null});
-  return {lv:3,t:'Explore the commerce world',
-   b:'<p class="quote">“'+INTRO_QUOTE+'”</p><div class="card"><h3>Career awareness questionnaire</h3>'+QUIZ.map(function(q,i){return question(q,i+1)}).join('')+'</div>',
-   f:back('disc2')+'<div class="r">'+(all?'':'<span class="hint">Answer every question to continue</span>')+btn('Next Level','next',{dis:!all})+'</div>'}};
-M.know=function(){return {lv:3,t:'The real world of commerce',
-   b:'<p class="quote">Your commerce degree can open different career paths. The right next step depends on the role you want, the skills you build and the qualifications it requires.</p><h3 style="font-size:22px">What you should know</h3><div class="grid g2">'+KNOW.map(function(k,i){return '<div class="card ins"><div class="num">'+(i+1)+'</div><div><h3>'+k[0]+'</h3><p class="muted">'+k[1]+'</p></div></div>'}).join('')+'</div>',
-   f:back('quiz')+'<div class="r">'+btn('Explore professional &amp; practical pathways','next')+'</div>'}};
-M.paths=function(){return {lv:4,t:'Decide your next step',
+M.paths=function(){return {lv:3,t:'Decide your next step',
    b:'<p class="lead">Explore your opportunities. Discover your choices. Tap a path to see what it includes.</p><div class="grid g3">'+Object.keys(PATHS).map(function(k){var P=PATHS[k];return '<button type="button" class="pathcard" data-act="sub" data-t="path" data-k="'+k+'"><span class="pl">PATH '+k+'</span><h3>'+P.n+'</h3><span class="muted small">'+P.s+'</span><span class="more">See what’s included →</span></button>'}).join('')+'</div>',
-   f:back('know')+'<div class="r">'+btn('Next','next')+'</div>'}};
-M.direction=function(){var all=answered(DIRQ)===DIRQ.length,tp=topPath();
+   f:back('disc2')+'<div class="r">'+btn('Next','next')+'</div>'}};
+M.direction=function(){var all=answered(DIRQ)===DIRQ.length;
   return {lv:4,t:'Career direction discovery',
-   b:'<p class="lead">You’ve explored five career pathways. Let’s discover which direction interests you most!</p><div class="card">'+DIRQ.map(function(q,i){return question(q,i+1)}).join('')+'</div>'+
-   (all?'<div class="result"><span class="ltr">'+(tp||'?')+'</span><div>'+(tp?'<b>Path '+tp+': '+PATHS[tp].n+'</b><div class="muted small">'+PATHS[tp].s+'. A starting point, not a final answer.</div>':'<b>You are still exploring</b><div class="muted small">That is fine. Pick any career area next, or talk to an expert.</div>')+'</div></div>':''),
-   f:back('paths')+'<div class="r">'+(all?'':'<span class="hint">'+answered(DIRQ)+' of '+DIRQ.length+' answered</span>')+btn('Next Level','next',{dis:!all})+'</div>'}};
-M.areas=function(){var top=topAreas(),sel=S.sel||S.area;
+   b:'<p class="lead">You’ve explored five career pathways. Let’s discover which direction interests you most!</p><div class="card">'+DIRQ.map(function(q,i){return question(q,i+1)}).join('')+'</div>',
+   f:back('paths')+'<div class="r">'+(all?'':'<span class="hint">'+answered(DIRQ)+' of '+DIRQ.length+' answered</span>')+btn('Next Level','next')+'</div>'}};
+M.areas=function(){var top=topAreas(),sel=S.sel.length?S.sel:(S.area?[S.area].concat(S.area2?[S.area2]:[]):[]);
   return {lv:5,t:'Which career area would you like to explore?',
-   b:'<p class="lead">There is more than one way to build a successful career in commerce.</p>'+(top.length?'<p class="quote">Based on your answers, <b>'+top.map(function(k){return esc(AREAS[k].n)}).join('</b> and <b>')+'</b> may suit you well. You can explore any area.</p>':'')+
-   '<div class="grid g2">'+Object.keys(AREAS).map(function(k){var A=AREAS[k];return '<button type="button" class="areacard'+(sel===k?' sel':'')+'" data-act="selarea" data-k="'+k+'" aria-pressed="'+(sel===k)+'">'+(top.indexOf(k)>-1?'<span class="rec">SUGGESTED</span>':'')+'<span class="ltr">'+k+'</span><span><b>'+esc(A.n)+'</b><span class="d">'+esc(A.s)+'</span></span></button>'}).join('')+'</div>',
-   f:back('direction')+'<div class="r">'+(sel?'':'<span class="hint">Choose an area to continue</span>')+btn('START MY CAREER DISCOVERY','startArea',{dis:!sel})+'</div>'}};
+   b:'<p class="lead">There is more than one way to build a successful career in commerce.</p><p class="small muted">You can select up to 2 areas.</p>'+(top.length?'<p class="quote">Based on your answers, <b>'+top.map(function(k){return esc(AREAS[k].n)}).join('</b> and <b>')+'</b> may suit you well. You can explore any area.</p>':'')+
+   '<div class="grid g2">'+Object.keys(AREAS).map(function(k){var A=AREAS[k],on=sel.indexOf(k)>-1;return '<button type="button" class="areacard'+(on?' sel':'')+'" data-act="selarea" data-k="'+k+'" aria-pressed="'+on+'">'+(top.indexOf(k)>-1?'<span class="rec">SUGGESTED</span>':'')+'<span class="ltr">'+k+'</span><span><b>'+esc(A.n)+'</b><span class="d">'+esc(A.s)+'</span></span></button>'}).join('')+'</div>',
+   f:back('direction')+'<div class="r">'+(sel.length?'':'<span class="hint">Choose up to 2 areas to continue</span>')+btn('START MY CAREER DISCOVERY','startArea',{dis:!sel.length})+'</div>'}};
 
 function softTile(s,mark){return '<button type="button" class="logotile'+(mark?' mark':'')+'" data-act="sub" data-t="'+(s.kind)+'" data-k="'+s.id+'"><span class="lg"><img src="'+LOGO[s.id]+'" alt="'+esc(s.n)+' logo"></span><b>'+esc(s.short||s.n)+'</b></button>'}
 var STEPS={A:['roadmap','skills','software','pgd'],D:['studies','quals']};
@@ -433,7 +424,7 @@ M.area=function(){
   }else if(k==='D'){
     if(cur==='studies'){nextLabel='Next';
       b='<div class="grid g2"><div class="card"><h3>Possible study pathways</h3>'+ticks(D_PATHS)+'</div><div class="card"><h3>Before You Choose</h3>'+ticks(D_BEFORE)+'</div></div><div class="call"><b>A qualification alone does not guarantee a job, a visa or overseas employment.</b></div>'}
-    if(cur==='quals'){var want=[];(S.a.x7||[]).forEach(function(i){var l=QUIZ[6].o[i][0];if(QMAP[l])want=want.concat(QMAP[l]);if(i===5)want=QUALS.map(function(q){return q.id})});
+    if(cur==='quals'){var want=[];(S.a.d5||[]).forEach(function(i){var l=DIRQ[4].o[i][0];if(QUALMAP[l])want=want.concat(QUALMAP[l]);if(i===6)want=QUALS.map(function(q){return q.id})});
       b='<p class="quote">“'+INTRO_QUOTE+'”</p><h3 style="font-size:22px">Professional qualification awareness</h3><p class="muted small" style="margin-top:-8px">Tap a logo for scope, eligibility, duration, fees and career options.'+(want.length?' Qualifications you picked earlier are tagged.':'')+'</p><div class="grid g4">'+QUALS.map(function(q){return softTile(Object.assign({kind:'qual',short:q.n.split(' ')[0]},q),want.indexOf(q.id)>-1)}).join('')+'</div>'}
   }else if(k==='B'){b='<div class="grid g2"><div class="card"><h3>Interested in Finance &amp; Banking?</h3>'+ticks(B_DIR)+'</div><div class="card"><h3>Skills to build</h3>'+ticks(B_SK)+'</div></div><div class="call"><b>Your next step:</b> Compare banking examinations, finance-related qualifications and entry-level opportunities before choosing a path.</div>'}
   else if(k==='C'){b='<div class="grid g2"><div class="card"><h3>Possible career directions</h3>'+ticks(C_DIR)+'</div><div class="card"><h3>Skills to build</h3>'+ticks(C_SK)+'</div></div><div class="call"><b>Your next step:</b> Choose one area, complete a small practical project and explore internships or suitable entry-level roles.</div>'}
@@ -447,23 +438,23 @@ M.area=function(){
   return {lv:6,eyebrowExtra:'6'+k,t:A.full||A.n,b:b,f:backBtn+'<div class="r">'+btn(nextLabel,'anext')+'</div>'}};
 M.connect=function(){var sn=snapshot();
   return {lv:7,t:'Connect with the right career expert',
-   b:'<div class="grid g3">'+EXPERTS.map(function(e){return '<div class="card expert"><h3>'+e[0]+'</h3><p class="muted small">'+e[1]+'</p></div>'}).join('')+'</div><div class="card"><h3>Your career snapshot</h3><dl class="kvs" style="margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px">'+sn.rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>'}).join('')+(sn.tip?'<div style="grid-column:1/-1"><dt>For your biggest concern</dt><dd>'+esc(sn.tip)+'</dd></div>':'')+'</dl></div>',
+   b:'<div class="grid g3">'+EXPERTS.map(function(e){return '<div class="card expert"><h3>'+e[0]+'</h3><p class="muted small">'+e[1]+'</p></div>'}).join('')+'</div><div class="aisum"><span class="tag">✦ Your AI career summary</span><p>'+esc(aiSummary())+'</p></div><div class="card"><h3>Your career snapshot</h3><dl class="kvs" style="margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px">'+sn.rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>'}).join('')+(sn.tip?'<div style="grid-column:1/-1"><dt>For your biggest concern</dt><dd>'+esc(sn.tip)+'</dd></div>':'')+'</dl></div>',
    f:back(S.area?'area':'areas')+'<div class="r">'+btn('Let’s help you explore your next step','next')+'</div>'}};
-M.enquiry=function(){var def=S.lead.topic||AREA_FORM[S.area]||'Other';
-  if(S.sent)return {lv:7,t:'Enquiry received',b:'<div class="done-box"><div class="ok">✓</div><h3 style="font-size:26px">Thank you, '+esc(S.p.name||'student')+'</h3><p class="muted" style="max-width:48ch">Your enquiry has been sent to Finishing School India. A career expert will contact you on the number you shared and use this summary to guide your first conversation.</p>'+(S.ref?'<p class="small">Your reference: <b>'+esc(S.ref)+'</b></p>':'')+'<pre class="sum" id="sum">'+esc(summaryText(def))+'</pre><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">'+(S.wa?'<a class="btn" href="'+esc(S.wa)+'" target="_blank" rel="noopener">Continue on WhatsApp</a>':'')+'<button class="btn'+(S.wa?' ghost':'')+'" type="button" data-act="copy">Copy summary</button><button class="btn ghost" type="button" data-act="close">Back to my journey</button></div></div>',f:''};
+M.enquiry=function(){var def=S.lead.topic||AREA_FORM[S.area]||'Other / Not sure';
+  if(S.sent)return {lv:7,t:'Enquiry received',b:'<div class="done-box"><div class="ok">✓</div><h3 style="font-size:26px">Thank you, '+esc(S.p.name||'student')+'</h3><p class="muted" style="max-width:48ch">Your enquiry has been sent to Finishing School India. A career expert will contact you on the number you shared and use this summary to guide you.</p>'+(S.ref?'<p class="small">Your reference: <b>'+esc(S.ref)+'</b></p>':'')+'<div class="aisum" style="text-align:left;width:100%"><span class="tag">✦ Your AI career summary</span><p>'+esc(aiSummary())+'</p></div><pre class="sum" id="sum">'+esc(summaryText(def))+'</pre><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">'+(S.wa?'<a class="btn" href="'+esc(S.wa)+'" target="_blank" rel="noopener">Continue on WhatsApp</a>':'')+'<button class="btn'+(S.wa?' ghost':'')+'" type="button" data-act="copy">Copy summary</button><button class="btn ghost" type="button" data-act="close">Back to my journey</button></div></div>',f:''};
   return {lv:7,t:'Let’s help you explore your next step',
-   b:'<form class="card" id="leadForm" novalidate style="display:flex;flex-direction:column;gap:14px"><div class="grid g2"><div class="field"><label for="l_name">Name</label><input class="in" id="l_name" data-f="name" value="'+esc(S.p.name)+'" placeholder="Your full name"></div><div class="field"><label for="l_phone">Phone / WhatsApp Number</label><input class="in" id="l_phone" data-l="phone" inputmode="tel" value="'+esc(S.lead.phone)+'" placeholder="Your contact number"></div></div><div class="grid g2"><div class="field"><label for="l_topic">Career Area of Interest</label><select class="in" id="l_topic" data-l="topic">'+['Accounting','Finance','Management','Other'].map(function(x){return '<option'+(x===def?' selected':'')+'>'+x+'</option>'}).join('')+'</select></div><div class="field"><label for="l_ask">What would you like to know?</label><select class="in" id="l_ask" data-l="ask">'+['Career guidance','Course details','Fees','Training options'].map(function(x){return '<option'+(x===S.lead.ask?' selected':'')+'>'+x+'</option>'}).join('')+'</select></div></div><label style="display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14px;align-items:start"><input type="checkbox" id="l_ok" data-l="ok"'+(S.lead.ok?' checked':'')+' style="width:20px;height:20px;accent-color:var(--gold)"><span>I agree to be contacted about my enquiry and understand how my information will be used.</span></label><p class="small muted" style="margin:-6px 0 0 32px">Submitting sends your details and career snapshot to Finishing School India. <button type="button" class="linkbtn" data-act="sub" data-t="privacy" data-k="n">Read the privacy notice</button></p><div class="hp" aria-hidden="true"><label for="l_web">Leave this empty</label><input id="l_web" name="website" tabindex="-1" autocomplete="off"></div><div id="lerr" class="small" style="color:var(--bad)" role="alert"></div></form>',
+   b:'<form class="card" id="leadForm" novalidate style="display:flex;flex-direction:column;gap:14px"><div class="grid g2"><div class="field"><label for="l_name">Name</label><input class="in" id="l_name" data-f="name" value="'+esc(S.p.name)+'" placeholder="Your full name"></div><div class="field"><label for="l_phone">Phone / WhatsApp Number</label><input class="in" id="l_phone" data-l="phone" inputmode="tel" value="'+esc(S.lead.phone)+'" placeholder="Your contact number"></div></div><div class="grid g2"><div class="field"><label for="l_topic">Career Area of Interest</label><select class="in" id="l_topic" data-l="topic">'+['Accounting','Finance','Management','Taxation','Professional Qualification','Other / Not sure'].map(function(x){return '<option'+(x===def?' selected':'')+'>'+x+'</option>'}).join('')+'</select></div><div class="field"><label for="l_ask">What would you like to know?</label><select class="in" id="l_ask" data-l="ask">'+['Career guidance','Training options'].map(function(x){return '<option'+(x===S.lead.ask?' selected':'')+'>'+x+'</option>'}).join('')+'</select></div></div><label style="display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14px;align-items:start"><input type="checkbox" id="l_ok" data-l="ok"'+(S.lead.ok?' checked':'')+' style="width:20px;height:20px;accent-color:var(--gold)"><span>I agree to be contacted about my enquiry and understand how my information will be used.</span></label><p class="small muted" style="margin:-6px 0 0 32px">Submitting sends your details and career snapshot to Finishing School India. <button type="button" class="linkbtn" data-act="sub" data-t="privacy" data-k="n">Read the privacy notice</button></p><div class="hp" aria-hidden="true"><label for="l_web">Leave this empty</label><input id="l_web" name="website" tabindex="-1" autocomplete="off"></div><div id="lerr" class="small" style="color:var(--bad)" role="alert"></div></form>',
    f:back('connect')+'<div class="r"><button class="btn" type="submit" form="leadForm"'+(S.sending?' disabled':'')+'>'+(S.sending?'Sending…':'Submit My Enquiry')+'</button></div>'}};
 function optLabel(q,i){var o=q.o[i];return o==null?'':Array.isArray(o)?o[0]:o}
 function answerList(){var out=[];
-  [['Level 2',DISC1.concat(DISC2)],['Level 3',QUIZ],['Level 4',DIRQ]].forEach(function(g){g[1].forEach(function(q){var v=S.a[q.id];if(v==null||(q.multi&&!v.length))return;
+  [['Level 2',DISC1.concat(DISC2)],['Level 4',DIRQ]].forEach(function(g){g[1].forEach(function(q){var v=S.a[q.id];if(v==null||(q.multi&&!v.length))return;
     out.push({level:g[0],q:q.t,a:q.multi?v.map(function(i){return optLabel(q,i)}).join('; '):optLabel(q,v)})})});
   return out}
 function leadPayload(topic){var tp=topPath(),sn=snapshot();
   return {vid:VID,noticeVersion:NOTICE_VERSION,consent:S.lead.ok===true,website:($('#l_web')||{}).value||'',
     profile:{name:S.p.name,college:S.p.college,course:S.p.course,year:S.p.year,district:S.p.district,mind:S.p.mind},
     contact:{name:S.p.name,phone:S.lead.phone,topic:topic,ask:S.lead.ask},
-    results:{suggestedAreas:topAreas().map(function(k){return AREAS[k].n}),preferredPath:tp?'Path '+tp+': '+PATHS[tp].n:'',exploredArea:S.area?AREAS[S.area].n:'',compareAreas:S.cmp.map(function(k){return AREAS[k].n}),concernTip:sn.tip||''},
+    results:{suggestedAreas:topAreas().map(function(k){return AREAS[k].n}),preferredPath:tp?'Path '+tp+': '+PATHS[tp].n:'',exploredArea:S.area?AREAS[S.area].n+(S.area2?' and '+AREAS[S.area2].n:''):'',compareAreas:S.cmp.map(function(k){return AREAS[k].n}),concernTip:sn.tip||'',aiSummary:aiSummary()},
     answers:answerList(),summary:summaryText(topic)}}
 function summaryText(topic){return snapshot().rows.map(function(r){return r[0]+': '+r[1]}).join('\n')+'\nCareer area of interest: '+topic+'\nWants to know: '+S.lead.ask+'\nPhone: '+S.lead.phone}
 
@@ -495,7 +486,7 @@ function renderModal(){
   if(sc.lv&&S.modal!=='privacy')track('open',sc.lv);
 }
 /* completed levels are view-only: answers stay visible but cannot be changed */
-var SCREEN_LV={profile:1,disc1:2,disc2:2,quiz:3,know:3,paths:4,direction:4,areas:5,area:6,connect:7,enquiry:7};
+var SCREEN_LV={profile:1,disc1:2,disc2:2,paths:3,direction:4,areas:5,area:6,connect:7,enquiry:7};
 function readOnly(){return !!S.modal&&ok(SCREEN_LV[S.modal])}
 var EDITABLE='[data-act=pick],[data-act=mind],[data-act=selarea],[data-act=cmp],input[data-f],select[data-f],textarea[data-idea]';
 function lockCompleted(mb){
@@ -514,13 +505,13 @@ function render(){
     return '<button type="button" class="tile'+(done?' done':'')+(cur?' cur':'')+'" data-act="tile" data-n="'+n+'"'+(locked?' disabled':'')+'><span class="n">'+(done?'✓':n)+'</span><span><b>'+(n===6&&S.area?'Your roadmap: '+esc(AREAS[S.area].n):l[0])+'</b><span class="s">'+l[1]+'</span><span class="st">'+st+'</span></span></button>'}).join('');
   var sn=snapshot();
   $('#page').innerHTML=
-  '<section class="hero"><div class="hero-txt"><span class="eyebrow">PROFESSIONAL CAREER MASTER PLAN FOR B.COM &amp; BBA STUDENTS</span><h1>Kerala Commerce Career Connection Kit</h1><p>An Online Career Master for B.Com &amp; BBA Students — Discover Your Potential. Explore Career Opportunities. Build Your Future.</p><p class="by">Presented by: Finishing School India</p><div class="chips"><span>Career Guidance</span><span>Professional Qualifications</span><span>Job Readiness</span><span>Career Planning</span></div><button class="btn" type="button" data-act="tile" data-n="'+(h>=7?7:nxt)+'">'+(started?(h>=7?'Review my plan':'Continue your journey'):'Welcome to Your Career Journey')+' <span aria-hidden="true">→</span></button></div><div class="hero-logo"><img src="'+LOGO.fsi+'" alt="Finishing School India — Be A Complete Accountant"></div></section>'+
+  '<section class="hero-banner"><img src="assets/img/hero-banner.jpg" width="1600" height="731" alt="Kerala Commerce Career Connect — Career Master Plan for Commerce Students, presented by Finishing School India. Career Guidance, Professional Qualifications, Job Readiness, Career Planning." loading="eager"><button class="hero-cta" type="button" data-act="tile" data-n="'+(h>=7?7:nxt)+'"><span class="hp">'+(started?(h>=7?'Review my plan':'Continue your journey'):'Start your career journey')+'</span></button></section>'+
   '<div class="hubgrid'+(started?' has':'')+'" id="journey"><div style="display:flex;flex-direction:column;gap:14px"><div class="sect"><h2>Your career journey</h2><span class="muted small">'+h+' of 7 levels completed</span></div><div class="tiles">'+tiles+'</div></div>'+
   (started?'<aside class="snap"><h3>Welcome, '+esc(S.p.name.split(' ')[0]||'student')+'</h3><span class="muted small">Your snapshot updates as you answer.</span><dl style="margin:0">'+sn.rows.slice(1).map(function(r){return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'}).join('')+'</dl></aside>':'')+'</div>'+
   '<div class="foot">Kerala Commerce Career Connection Kit · Finishing School India · Career Guidance | Professional Qualifications | Job Readiness | Career Planning<br><button type="button" class="linkbtn" data-act="privacy">Privacy notice</button></div>'+
   '<button class="theme" id="themeBtn" type="button" aria-label="Switch between light and dark theme" title="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>';
 }
-var START={1:'profile',2:'disc1',3:'quiz',4:'paths',5:'areas',7:'connect'};
+var START={1:'profile',2:'disc1',3:'paths',4:'direction',5:'areas',7:'connect'};
 
 /* ======================= EVENTS ======================= */
 function finish(n){S.done[n]=true;save();track('complete',n)}
@@ -537,19 +528,22 @@ document.addEventListener('click',function(e){
   else if(a==='go'){openScreen(t.dataset.to)}
   else if(readOnly()&&/^(pick|mind|selarea|cmp)$/.test(a))return;
   else if(a==='mind'){S.p.mind=t.dataset.v;save();renderModal()}
-  else if(a==='submitProfile'){finish(1);openScreen('disc1')}
-  else if(a==='pick'){var all=QUIZ.concat(DISC1,DISC2,DIRQ);var q=all.filter(function(x){return x.id===t.dataset.q})[0],i=+t.dataset.i;
+  else if(a==='submitProfile'){var p=S.p,fields=[['name',!p.name.trim()],['college',!p.college.trim()],['course',!p.course],['year',!p.year],['district',!p.district],['mindCard',!p.mind]],bad0=null;
+    fields.forEach(function(f){var el=document.getElementById(f[0]);if(!el)return;el.classList.toggle('err',f[1]);if(f[1]&&!bad0)bad0=el});
+    if(bad0){bad0.scrollIntoView({behavior:'smooth',block:'center'});if(bad0.focus)bad0.focus({preventScroll:true});return}
+    finish(1);openScreen('disc1')}
+  else if(a==='pick'){var all=DISC1.concat(DISC2,DIRQ);var q=all.filter(function(x){return x.id===t.dataset.q})[0],i=+t.dataset.i;
     if(q.multi){var c=S.a[q.id]||[];var j=c.indexOf(i);if(j>-1)c.splice(j,1);else c.push(i);S.a[q.id]=c}else S.a[q.id]=i;save();renderModal()}
-  else if(a==='next'){var m=S.modal;
+  else if(a==='next'){var m=S.modal,qlist={disc1:DISC1,disc2:DISC2,direction:DIRQ}[m];
+    if(qlist){var bad=null;qlist.forEach(function(q){var el=document.getElementById('q_'+q.id);if(!el)return;var v=S.a[q.id];var missing=q.multi?!(v&&v.length):v==null;el.classList.toggle('err',missing);if(missing&&!bad)bad=el});
+      if(bad){bad.scrollIntoView({behavior:'smooth',block:'center'});var fo=bad.querySelector('.opt');if(fo)fo.focus({preventScroll:true});return}}
     if(m==='disc1')openScreen('disc2');
-    else if(m==='disc2'){finish(2);openScreen('quiz')}
-    else if(m==='quiz')openScreen('know');
-    else if(m==='know'){finish(3);openScreen('paths')}
-    else if(m==='paths')openScreen('direction');
+    else if(m==='disc2'){finish(2);openScreen('paths')}
+    else if(m==='paths'){finish(3);openScreen('direction')}
     else if(m==='direction'){finish(4);openScreen('areas')}
     else if(m==='connect')openScreen('enquiry')}
-  else if(a==='selarea'){S.sel=t.dataset.k;renderModal()}
-  else if(a==='startArea'){S.area=S.sel||S.area;S.aStep=0;finish(5);openScreen('area')}
+  else if(a==='selarea'){var k3=t.dataset.k,j3=S.sel.indexOf(k3);if(j3>-1)S.sel.splice(j3,1);else{if(S.sel.length===2)S.sel.shift();S.sel.push(k3)}renderModal()}
+  else if(a==='startArea'){S.area=S.sel[0]||S.area;S.area2=S.sel[1]||null;S.aStep=0;finish(5);openScreen('area')}
   else if(a==='anext'){var st=areaSteps(S.area);if(S.aStep<st.length-1){S.aStep++;openScreen('area')}else{finish(6);openScreen('connect')}}
   else if(a==='aback'){S.aStep=Math.max(0,S.aStep-1);openScreen('area')}
   else if(a==='cmp'){var k=t.dataset.k,j2=S.cmp.indexOf(k);if(j2>-1)S.cmp.splice(j2,1);else{if(S.cmp.length===2)S.cmp.shift();S.cmp.push(k)}renderModal()}
@@ -557,7 +551,7 @@ document.addEventListener('click',function(e){
 });
 document.addEventListener('input',function(e){var t=e.target;
   if((t.dataset.f&&ok(1))||(t.dataset.idea&&readOnly()))return;
-  if(t.dataset.f){S.p[t.dataset.f]=t.value;save();if(S.modal==='profile'){var p=S.p,g=p.name.trim()&&p.college.trim()&&p.course&&p.year&&p.district&&p.mind;var b=$('[data-act=submitProfile]');if(b)b.disabled=!g;var h=$('#pHint');if(h)h.textContent=g?'':'Fill in every field to continue'}}
+  if(t.dataset.f){S.p[t.dataset.f]=t.value;save();t.classList.remove('err');if(S.modal==='profile'){var p=S.p,g=p.name.trim()&&p.college.trim()&&p.course&&p.year&&p.district&&p.mind;var h=$('#pHint');if(h)h.textContent=g?'':'Fill in every field to continue'}}
   else if(t.dataset.idea){S.idea[t.dataset.idea]=t.value;save()}
   else if(t.dataset.l){S.lead[t.dataset.l]=t.type==='checkbox'?t.checked:t.value}});
 document.addEventListener('submit',function(e){if(e.target.id!=='leadForm')return;e.preventDefault();

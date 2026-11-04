@@ -129,7 +129,7 @@ pre{white-space:pre-wrap;margin:0;font:13px/1.5 var(--body)}
 <script>
 var $=function(s){return document.querySelector(s)};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-var LV=['Start your career profile','Discover yourself','Explore the commerce world','Decide your next step','Choose a career area','Your career roadmap','Connect with an expert'];
+var LV=['Start your career profile','Discover yourself','Decide your next step','Career direction discovery','Choose a career area','Your career roadmap','Connect with an expert'];
 var D={leads:[],statuses:[],open:null};
 try{$('#logo').src=LOGO.fsi}catch(e){}
 function api(u,o){return fetch(location.origin+u,Object.assign({credentials:'same-origin'},o||{})).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
@@ -162,6 +162,7 @@ function renderLeads(){
 function detail(l){var p=l.profile,r=l.results;
   var kv=function(rows){return '<dl>'+rows.filter(function(x){return x[1]}).map(function(x){return '<dt>'+x[0]+'</dt><dd>'+esc(x[1])+'</dd>'}).join('')+'</dl>'};
   return '<div class="dgrid"><div><h3>Profile</h3>'+kv([['College',p.college],['Course',p.course+(p.year?', '+p.year+' year':'')],['District',p.district],['Mindset',p.mindset]])+
+    (r.aiSummary?'<h3 style="margin-top:14px">AI summary</h3><p class="muted">'+esc(r.aiSummary)+'</p>':'')+
     '<h3 style="margin-top:14px">Results</h3>'+kv([['Suggested areas',r.suggestedAreas.join(' · ')],['Preferred pathway',r.preferredPath],['Area explored',r.exploredArea],['Compared',r.compareAreas.join(' · ')],['Concern tip',r.concernTip]])+
     '<h3 style="margin-top:14px">Consent</h3>'+kv([['Given',fmt(l.consent.at)],['Notice version',l.consent.noticeVersion]])+
     '<h3 style="margin-top:14px">Counsellor note</h3><textarea class="in" style="width:100%;min-height:70px" data-note="'+l.id+'" aria-label="Counsellor note">'+esc(l.note)+'</textarea><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn ghost" type="button" data-save="'+l.id+'">Save note</button><button class="btn bad" type="button" data-del="'+l.id+'">Delete enquiry</button></div></div>'+
