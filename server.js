@@ -147,19 +147,20 @@ function whatsappUrl(lead) {
   return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(t);
 }
 async function forwardToCrm(lead) {
+  // Awaited by the caller before responding: on Vercel's serverless runtime, work
+  // fired off after the response is sent can be frozen before it completes, so a
+  // fire-and-forget call here was silently failing. Kept to one short attempt so
+  // this can't blow past the platform's function-duration limit.
   if (!CRM_WEBHOOK_URL) return;
   const body = JSON.stringify({ event: 'lead.created', lead: Object.assign({}, lead, { crm: undefined }) });
   const headers = { 'Content-Type': 'application/json' };
   if (CRM_WEBHOOK_SECRET) headers['X-KCCC-Signature'] = 'sha256=' + crypto.createHmac('sha256', CRM_WEBHOOK_SECRET).update(body).digest('hex');
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    try {
-      const r = await fetch(CRM_WEBHOOK_URL, { method: 'POST', headers, body, signal: AbortSignal.timeout(10000) });
-      if (r.ok) { lead.crm = { status: 'sent', at: new Date().toISOString() }; return saveLeads(); }
-      lead.crm = { status: 'failed', code: r.status, at: new Date().toISOString() };
-    } catch (e) { lead.crm = { status: 'failed', error: String(e.message || e).slice(0, 200), at: new Date().toISOString() }; }
-    await new Promise(ok => setTimeout(ok, attempt * 2000));
+  try {
+    const r = await fetch(CRM_WEBHOOK_URL, { method: 'POST', headers, body, signal: AbortSignal.timeout(6000) });
+    lead.crm = r.ok ? { status: 'sent', at: new Date().toISOString() } : { status: 'failed', code: r.status, at: new Date().toISOString() };
+  } catch (e) {
+    lead.crm = { status: 'failed', error: String(e.message || e).slice(0, 200), at: new Date().toISOString() };
   }
-  saveLeads();
 }
 
 /* ---------- analytics ---------- */
@@ -242,7 +243,7 @@ async function handler(req, res) {
       if (errors) return json(res, 422, { error: 'Please check: ' + errors.join(', '), fields: errors });
       leads.push(lead); await saveLeads();
       appendEvent({ t: lead.createdAt, vid: lead.vid || ('lead:' + lead.id), type: 'enquiry' });
-      forwardToCrm(lead);
+      await forwardToCrm(lead); await saveLeads();
       return json(res, 201, { ok: true, ref: lead.ref, whatsappUrl: whatsappUrl(lead) });
     }
 
