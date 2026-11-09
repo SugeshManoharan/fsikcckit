@@ -154,12 +154,19 @@ textarea.in{resize:vertical;min-height:80px}
 .ins{display:grid;grid-template-columns:36px 1fr;gap:14px}
 .ins .num{width:36px;height:36px;border-radius:10px;background:var(--gold-soft);color:var(--gold-text);display:grid;place-items:center;font:700 17px var(--display)}
 .ins h3{font:700 16px var(--body);margin-bottom:3px}
-.pathcard,.areacard,.logotile{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;position:relative;min-width:0}
-.pathcard:hover,.areacard:hover,.logotile:hover{border-color:var(--gold)}
-.pathcard{padding:18px;display:flex;flex-direction:column;gap:8px}
-.pathcard .pl{font:700 12px var(--body);letter-spacing:.14em;color:var(--gold-text)}
-.pathcard h3{font-size:19px;margin:0}
-.more{color:var(--gold-text);font-weight:700;font-size:14px;margin-top:4px}
+.areacard,.logotile{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;position:relative;min-width:0}
+.areacard:hover,.logotile:hover{border-color:var(--gold)}
+.pathcard{box-sizing:border-box;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;position:relative;min-width:0;padding:18px;display:flex;flex-direction:column;gap:8px;transition:border-color .15s,background .15s}
+.pathcard:hover{border-color:var(--gold)}
+.pathcard.sel{border-color:var(--gold);background:var(--gold-soft)}
+.pathpick{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:8px;width:100%}
+.pathpick .pl{font:700 12px var(--body);letter-spacing:.14em;color:var(--gold-text)}
+.pathpick h3{font-size:19px;margin:0}
+.pathpick::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);position:absolute;top:18px;right:18px}
+.pathcard.sel .pathpick::before{background:var(--gold) center/12px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2l2.7 2.6L10 3.4' fill='none' stroke='%232A1A06' stroke-width='2'/%3E%3C/svg%3E");border-color:var(--gold)}
+.more{all:unset;cursor:pointer;color:var(--gold-text);font-weight:700;font-size:14px;margin-top:4px}
+.pathcard:has(.pathpick.ro){opacity:.75}
+.pathpick.ro{cursor:default}
 .areacard{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:center;padding:14px 16px}
 .areacard.sel{border-color:var(--gold);background:var(--gold-soft)}
 .areacard .ltr{width:48px;height:48px;border-radius:12px;background:var(--brand);color:var(--gold-hi);display:grid;place-items:center;font:700 22px var(--display)}
@@ -315,9 +322,9 @@ var AREA_FORM={A:'Accounting',B:'Finance',C:'Management',D:'Professional Qualifi
 var INTRO_QUOTE="Commerce graduates can build careers in accounting, taxation, banking, finance, business management, marketing, analytics and professional services. Some opportunities begin with a degree and practical skills; others require additional qualifications, examinations or experience. Let's explore your options before choosing your direction.";
 
 /* ======================= STATE ======================= */
-var S={modal:null,sub:null,p:{name:'',college:'',course:'',year:'',district:'',mind:''},a:{},done:[],area:null,area2:null,sel:[],aStep:0,cmp:[],idea:{},lead:{phone:'',topic:'',ask:'Career guidance',ok:false},sent:false,ref:'',wa:null,sending:false,privacy:false,dpage:0};
-try{var sv=localStorage.getItem('kccc2');if(sv){var o=JSON.parse(sv);if(o&&o.p){S.p=o.p;S.a=o.a||{};S.idea=o.idea||{};S.done=o.done||[];S.area=o.area||null;S.area2=o.area2||null;S.privacy=!!o.privacy;S.cmp=o.cmp||[];if(o.sent){S.sent=true;S.ref=o.ref||'';S.wa=o.wa||null;S.lead=Object.assign(S.lead,o.lead||{},{ok:false})}}}}catch(e){}
-function save(){try{localStorage.setItem('kccc2',JSON.stringify({p:S.p,a:S.a,idea:S.idea,done:S.done,area:S.area,area2:S.area2,privacy:S.privacy,cmp:S.cmp,sent:S.sent,ref:S.ref,wa:S.wa,lead:S.sent?{phone:S.lead.phone,topic:S.lead.topic,ask:S.lead.ask}:undefined}))}catch(e){}}
+var S={modal:null,sub:null,p:{name:'',college:'',course:'',year:'',district:'',mind:''},a:{},done:[],area:null,area2:null,sel:[],pathPick:null,aStep:0,cmp:[],idea:{},lead:{phone:'',topic:'',ask:'Career guidance',ok:false},sent:false,ref:'',wa:null,sending:false,privacy:false,dpage:0};
+try{var sv=localStorage.getItem('kccc2');if(sv){var o=JSON.parse(sv);if(o&&o.p){S.p=o.p;S.a=o.a||{};S.idea=o.idea||{};S.done=o.done||[];S.area=o.area||null;S.area2=o.area2||null;S.pathPick=o.pathPick||null;S.privacy=!!o.privacy;S.cmp=o.cmp||[];if(o.sent){S.sent=true;S.ref=o.ref||'';S.wa=o.wa||null;S.lead=Object.assign(S.lead,o.lead||{},{ok:false})}}}}catch(e){}
+function save(){try{localStorage.setItem('kccc2',JSON.stringify({p:S.p,a:S.a,idea:S.idea,done:S.done,area:S.area,area2:S.area2,pathPick:S.pathPick,privacy:S.privacy,cmp:S.cmp,sent:S.sent,ref:S.ref,wa:S.wa,lead:S.sent?{phone:S.lead.phone,topic:S.lead.topic,ask:S.lead.ask}:undefined}))}catch(e){}}
 
 /* ======================= BACKEND & ANALYTICS ======================= */
 /* API base: '' = same server that serves this page. For the standalone HTML build, set window.KCCC_API to the deployed server URL. */
@@ -339,7 +346,7 @@ function sumW(list,add){list.forEach(function(q){var i=S.a[q.id];if(i==null)retu
   (q.multi?i:[i]).forEach(function(ix){var w=q.o[ix]&&q.o[ix][1];if(w)for(var k in w)add[k]=(add[k]||0)+w[k]})})}
 function areaScores(){var sc={A:0,B:0,C:0,D:0,E:0,F:0};sumW(DISC1.concat(DISC2),sc);return sc}
 function topAreas(){var sc=areaScores();return Object.keys(sc).filter(function(k){return sc[k]>0}).sort(function(a,b){return sc[b]-sc[a]}).slice(0,2)}
-function topPath(){var sc={A:0,B:0,C:0,D:0,E:0};sumW(DIRQ,sc);var r=Object.keys(sc).sort(function(a,b){return sc[b]-sc[a]});return sc[r[0]]>0?r[0]:null}
+function topPath(){if(S.pathPick)return S.pathPick;var sc={A:0,B:0,C:0,D:0,E:0};sumW(DIRQ,sc);var r=Object.keys(sc).sort(function(a,b){return sc[b]-sc[a]});return sc[r[0]]>0?r[0]:null}
 
 /* ======================= HELPERS ======================= */
 function opts(q){var cur=S.a[q.id];
@@ -393,9 +400,10 @@ function discScreen(list,n0,part){var all=answered(list)===list.length;
    f:(part?back('disc1'):back('profile'))+'<div class="r">'+(all?'':'<span class="hint">'+answered(list)+' of '+list.length+' answered</span>')+btn('Next Level','next')+'</div>'}}
 M.disc1=function(){return discScreen(DISC1,0,0)};
 M.disc2=function(){return discScreen(DISC2,DISC1.length,1)};
-M.paths=function(){return {lv:3,t:'Decide your next step',
-   b:'<p class="lead">Explore your opportunities. Discover your choices. Tap a path to see what it includes.</p><div class="grid g3">'+Object.keys(PATHS).map(function(k){var P=PATHS[k];return '<button type="button" class="pathcard" data-act="sub" data-t="path" data-k="'+k+'"><span class="pl">PATH '+k+'</span><h3>'+P.n+'</h3><span class="muted small">'+P.s+'</span><span class="more">See what’s included →</span></button>'}).join('')+'</div>',
-   f:back('disc2')+'<div class="r">'+btn('Next','next')+'</div>'}};
+M.paths=function(){var sel=S.pathPick;
+  return {lv:3,t:'Decide your next step',
+   b:'<p class="lead">Explore your opportunities, then pick the path that feels right for you. You can change this anytime before you submit your enquiry.</p><div class="grid g3">'+Object.keys(PATHS).map(function(k){var P=PATHS[k],on=sel===k;return '<div class="pathcard'+(on?' sel':'')+'"><button type="button" class="pathpick" data-act="pathsel" data-k="'+k+'" aria-pressed="'+on+'"><span class="pl">PATH '+k+'</span><h3>'+P.n+'</h3><span class="muted small">'+P.s+'</span></button><button type="button" class="more" data-act="sub" data-t="path" data-k="'+k+'">See what’s included →</button></div>'}).join('')+'</div>',
+   f:back('disc2')+'<div class="r">'+(sel?'':'<span class="hint">Pick a path to continue</span>')+btn('Next','next',{dis:!sel})+'</div>'}};
 M.direction=function(){var all=answered(DIRQ)===DIRQ.length;
   return {lv:4,t:'Career direction discovery',
    b:'<p class="lead">You’ve explored five career pathways. Let’s discover which direction interests you most!</p><div class="card">'+DIRQ.map(function(q,i){return question(q,i+1)}).join('')+'</div>',
@@ -488,7 +496,7 @@ function renderModal(){
 /* every answer stays editable right up until the enquiry is actually submitted —
    only then does the whole journey become a locked, view-only record */
 function readOnly(){return !!S.modal&&S.sent}
-var EDITABLE='[data-act=pick],[data-act=mind],[data-act=selarea],[data-act=cmp],input[data-f],select[data-f],textarea[data-idea]';
+var EDITABLE='[data-act=pick],[data-act=mind],[data-act=selarea],[data-act=cmp],[data-act=pathsel],input[data-f],select[data-f],textarea[data-idea]';
 function lockCompleted(mb){
   if(!mb)return;
   if(ok(1)){var nm=mb.querySelector('#l_name');if(nm){nm.readOnly=true;nm.classList.add('ro')}}   // the enquiry name comes from the completed profile
@@ -526,7 +534,7 @@ document.addEventListener('click',function(e){
   else if(a==='closesub'){S.sub=null;renderModal()}
   else if(a==='sub'){S.sub={t:t.dataset.t,k:t.dataset.k};renderModal();var d=$('.ov.top h2');if(d)d.focus&&d.setAttribute('tabindex','-1'),d.focus()}
   else if(a==='go'){openScreen(t.dataset.to)}
-  else if(readOnly()&&/^(pick|mind|selarea|cmp)$/.test(a))return;
+  else if(readOnly()&&/^(pick|mind|selarea|cmp|pathsel)$/.test(a))return;
   else if(a==='mind'){S.p.mind=t.dataset.v;save();renderModal()}
   else if(a==='submitProfile'){var p=S.p,fields=[['name',!p.name.trim()],['college',!p.college.trim()],['course',!p.course],['year',!p.year],['district',!p.district],['mindCard',!p.mind]],bad0=null;
     fields.forEach(function(f){var el=document.getElementById(f[0]);if(!el)return;el.classList.toggle('err',f[1]);if(f[1]&&!bad0)bad0=el});
@@ -543,6 +551,7 @@ document.addEventListener('click',function(e){
     else if(m==='direction'){finish(4);openScreen('areas')}
     else if(m==='connect')openScreen('enquiry')}
   else if(a==='selarea'){var k3=t.dataset.k,j3=S.sel.indexOf(k3);if(j3>-1)S.sel.splice(j3,1);else{if(S.sel.length===2)S.sel.shift();S.sel.push(k3)}renderModal()}
+  else if(a==='pathsel'){S.pathPick=S.pathPick===t.dataset.k?null:t.dataset.k;save();renderModal()}
   else if(a==='startArea'){S.area=S.sel[0]||S.area;S.area2=S.sel[1]||null;S.aStep=0;finish(5);openScreen('area')}
   else if(a==='anext'){var st=areaSteps(S.area);if(S.aStep<st.length-1){S.aStep++;openScreen('area')}else{finish(6);openScreen('connect')}}
   else if(a==='aback'){S.aStep=Math.max(0,S.aStep-1);openScreen('area')}
