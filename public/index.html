@@ -268,7 +268,7 @@ var PATHS={
 var DIRQ=[
  {id:'d1',t:'What is your next career priority?',o:[['Higher Studies',{A:2}],['Get a Job',{B:2}],['Develop Professional Skills',{C:2}],['Government / Banking Exams',{D:2}],['Start a Business / Explore Other Careers',{E:2}],['Still Exploring']]},
  {id:'d2',t:'What makes your job application stronger?',o:[['Degree Certificate'],['Commerce Knowledge',{A:1}],['Practical Skills',{C:1}],['Degree + Practical Skills',{C:1,B:1}],['Not Sure']]},
- {id:'d3',t:'Can you perform practical accounting tasks?',o:[['Yes, independently',{B:1}],['I know the theory, but need practice',{C:2}],['Not yet',{C:2}]]},
+ {id:'d3',t:'Can you perform practical accounting tasks?',o:[['Yes, independently',{B:1}],['I know the theory, but need practice',{C:1}],['Not yet',{C:1}]]},
  {id:'d4',t:'Which preparation would you prefer?',o:[['Professional Training + Practical Projects',{C:2}],['Higher Education',{A:2}],['Competitive Exam Preparation',{D:2}],['Internship / Work Experience',{B:2}],['Business Development',{E:2}],['Career Guidance']]},
  {id:'d5',t:'Which professional qualifications would you like to understand?',multi:1,o:[['CA / CMA'],['ACCA / CPA'],['CIA — Certified Internal Auditor'],['EA — Enrolled Agent'],['US CMA'],['Not Sure yet'],['Interested in More than one / I need guidance'],['Not interested in pursuing any Professional Course']]}];
 var QUALMAP={'CA / CMA':['ca','cma'],'ACCA / CPA':['acca','cpa'],'CIA — Certified Internal Auditor':['cia'],'EA — Enrolled Agent':['ea']};
@@ -485,16 +485,16 @@ function renderModal(){
   if(fsel){var fe=null;try{fe=L.querySelector(fsel)}catch(x){}if(fe&&!fe.disabled)fe.focus({preventScroll:true})}
   if(sc.lv&&S.modal!=='privacy')track('open',sc.lv);
 }
-/* completed levels are view-only: answers stay visible but cannot be changed */
-var SCREEN_LV={profile:1,disc1:2,disc2:2,paths:3,direction:4,areas:5,area:6,connect:7,enquiry:7};
-function readOnly(){return !!S.modal&&ok(SCREEN_LV[S.modal])}
+/* every answer stays editable right up until the enquiry is actually submitted —
+   only then does the whole journey become a locked, view-only record */
+function readOnly(){return !!S.modal&&S.sent}
 var EDITABLE='[data-act=pick],[data-act=mind],[data-act=selarea],[data-act=cmp],input[data-f],select[data-f],textarea[data-idea]';
 function lockCompleted(mb){
   if(!mb)return;
   if(ok(1)){var nm=mb.querySelector('#l_name');if(nm){nm.readOnly=true;nm.classList.add('ro')}}   // the enquiry name comes from the completed profile
   if(!readOnly())return;
   [].forEach.call(mb.querySelectorAll(EDITABLE),function(el){if(el.tagName==='INPUT'||el.tagName==='TEXTAREA')el.readOnly=true;else el.disabled=true;el.classList.add('ro')});
-  mb.insertAdjacentHTML('afterbegin','<div class="notice"><i>✓</i><span><b>You have completed this level.</b> You can view your details and answers here, but they can no longer be changed.</span></div>');
+  mb.insertAdjacentHTML('afterbegin','<div class="notice"><i>✓</i><span><b>Your enquiry has been submitted.</b> You can view your details and answers here, but they can no longer be changed.</span></div>');
 }
 function openScreen(name){S.modal=name;S.sub=null;renderModal();var nb=$('.mb');if(nb)nb.scrollTop=0;var h=$('#mt');if(h)h.focus({preventScroll:true})}
 function closeModal(){S.modal=null;S.sub=null;renderModal();render();if(lastFocus&&document.contains(lastFocus))lastFocus.focus();window.scrollTo({top:$('#journey')?$('#journey').offsetTop-12:0,behavior:'smooth'})}
