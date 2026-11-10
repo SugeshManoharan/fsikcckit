@@ -41,6 +41,9 @@ p{margin:0}
 
 /* hub header */
 .theme{all:unset;cursor:pointer;position:fixed;z-index:40;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);box-shadow:var(--shadow)}
+.elapsed{position:fixed;z-index:70;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;border:2px solid var(--gold);background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--on-gold);box-shadow:var(--shadow);font:800 15px var(--body);font-variant-numeric:tabular-nums;pointer-events:none}
+.elapsed svg{width:18px;height:18px;flex:none}
+@media (max-width:640px){.elapsed{left:max(12px,env(safe-area-inset-left,0px));bottom:max(68px,env(safe-area-inset-bottom,0px));font-size:13px;padding:9px 14px}}
 .theme:hover{border-color:var(--gold);color:var(--ink)}
 .theme svg{width:20px;height:20px;pointer-events:none}
 .hero-banner{position:relative;display:block;border-radius:24px;overflow:hidden;box-shadow:var(--shadow);background:var(--brand)}
@@ -178,6 +181,18 @@ textarea.in{resize:vertical;min-height:80px}
 .logotile img{max-width:80%;max-height:68px;display:block}
 .logotile b{font:700 15px var(--body)}
 .logotile.mark::after{content:"YOU PICKED THIS";position:absolute;top:-9px;font:800 9.5px var(--body);letter-spacing:.07em;background:var(--gold);color:var(--on-gold);padding:2px 8px;border-radius:999px}
+.qualtile{box-sizing:border-box;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;position:relative;min-width:0;padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:border-color .15s,background .15s}
+.qualtile:hover{border-color:var(--gold)}
+.qualtile.sel{border-color:var(--gold);background:var(--gold-soft)}
+.qualtile .check{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:5px;border:2px solid var(--muted);background:var(--surface)}
+.qualtile.sel .check{background:var(--gold) center/12px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2l2.7 2.6L10 3.4' fill='none' stroke='%232A1A06' stroke-width='2'/%3E%3C/svg%3E");border-color:var(--gold)}
+.qualpick{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.qualpick .lg{width:100%;height:84px;background:#fff;border-radius:10px;display:grid;place-items:center;border:1px solid var(--line)}
+.qualpick img{max-width:80%;max-height:68px;display:block}
+.qualpick b{font:700 15px var(--body)}
+.qualtile .infoLink{all:unset;cursor:pointer;color:var(--gold-text);font-weight:700;font-size:12.5px}
+.qualtile:has(.qualpick.ro){opacity:.75}
+.qualpick.ro{cursor:default}
 .result{display:flex;gap:16px;align-items:center;background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:14px;padding:14px 18px}
 .result .ltr{font:700 30px var(--display);color:var(--gold-text)}
 .kv{display:grid;grid-template-columns:130px 1fr;gap:6px 14px;margin:0}
@@ -230,6 +245,7 @@ pre.sum{white-space:pre-wrap;text-align:left;background:var(--surface2);border:1
 
 <div class="page" id="page"></div>
 <div id="layer"></div>
+<div class="elapsed" id="elapsed" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span id="elapsedTxt">0:00</span></div>
 
 <script src="assets/logos.js"></script>
 <script>
@@ -322,9 +338,9 @@ var AREA_FORM={A:'Accounting',B:'Finance',C:'Management',D:'Professional Qualifi
 var INTRO_QUOTE="Commerce graduates can build careers in accounting, taxation, banking, finance, business management, marketing, analytics and professional services. Some opportunities begin with a degree and practical skills; others require additional qualifications, examinations or experience. Let's explore your options before choosing your direction.";
 
 /* ======================= STATE ======================= */
-var S={modal:null,sub:null,p:{name:'',college:'',course:'',year:'',district:'',mind:''},a:{},done:[],area:null,area2:null,sel:[],pathPick:null,aStep:0,cmp:[],idea:{},lead:{phone:'',topic:'',ask:'Career guidance',ok:false},sent:false,ref:'',wa:null,sending:false,privacy:false,dpage:0};
-try{var sv=localStorage.getItem('kccc2');if(sv){var o=JSON.parse(sv);if(o&&o.p){S.p=o.p;S.a=o.a||{};S.idea=o.idea||{};S.done=o.done||[];S.area=o.area||null;S.area2=o.area2||null;S.pathPick=o.pathPick||null;S.privacy=!!o.privacy;S.cmp=o.cmp||[];if(o.sent){S.sent=true;S.ref=o.ref||'';S.wa=o.wa||null;S.lead=Object.assign(S.lead,o.lead||{},{ok:false})}}}}catch(e){}
-function save(){try{localStorage.setItem('kccc2',JSON.stringify({p:S.p,a:S.a,idea:S.idea,done:S.done,area:S.area,area2:S.area2,pathPick:S.pathPick,privacy:S.privacy,cmp:S.cmp,sent:S.sent,ref:S.ref,wa:S.wa,lead:S.sent?{phone:S.lead.phone,topic:S.lead.topic,ask:S.lead.ask}:undefined}))}catch(e){}}
+var S={modal:null,sub:null,p:{name:'',college:'',course:'',year:'',district:'',mind:''},a:{},done:[],area:null,area2:null,sel:[],pathPick:null,qualPick:null,aStep:0,cmp:[],idea:{},lead:{phone:'',topic:'',ask:'Career guidance',ok:false},sent:false,ref:'',wa:null,sending:false,privacy:false,dpage:0,startedAt:null};
+try{var sv=localStorage.getItem('kccc2');if(sv){var o=JSON.parse(sv);if(o&&o.p){S.p=o.p;S.a=o.a||{};S.idea=o.idea||{};S.done=o.done||[];S.area=o.area||null;S.area2=o.area2||null;S.pathPick=o.pathPick||null;S.qualPick=o.qualPick||null;S.startedAt=o.startedAt||null;S.privacy=!!o.privacy;S.cmp=o.cmp||[];if(o.sent){S.sent=true;S.ref=o.ref||'';S.wa=o.wa||null;S.lead=Object.assign(S.lead,o.lead||{},{ok:false})}}}}catch(e){}
+function save(){try{localStorage.setItem('kccc2',JSON.stringify({p:S.p,a:S.a,idea:S.idea,done:S.done,area:S.area,area2:S.area2,pathPick:S.pathPick,qualPick:S.qualPick,startedAt:S.startedAt,privacy:S.privacy,cmp:S.cmp,sent:S.sent,ref:S.ref,wa:S.wa,lead:S.sent?{phone:S.lead.phone,topic:S.lead.topic,ask:S.lead.ask}:undefined}))}catch(e){}}
 
 /* ======================= BACKEND & ANALYTICS ======================= */
 /* API base: '' = same server that serves this page. For the standalone HTML build, set window.KCCC_API to the deployed server URL. */
@@ -372,9 +388,10 @@ function aiSummary(){var p=S.p,top=topAreas(),tp=topPath(),A=S.area?AREAS[S.area
   if(top.length)parts.push('Based on your answers, you show the strongest fit for '+top.map(function(k){return AREAS[k].n}).join(' and ')+'.');
   if(tp)parts.push('Right now your preferred direction leans toward Path '+tp+': '+PATHS[tp].n+'.');
   if(A)parts.push('You chose to explore '+A.n+(S.area2?' and '+AREAS[S.area2].n:'')+' in more depth.');
-  var d5=S.a.d5;
-  if(d5&&d5.length){var picks=d5.map(function(i){return DIRQ[4].o[i][0]}).filter(function(l){return !/Not Sure yet|Not interested/.test(l)});
-    if(picks.length)parts.push('You are curious about: '+picks.join(', ')+'.')}
+  if(S.qualPick&&S.qualPick.length){var qnames=S.qualPick.map(function(id){var q=QUALS.filter(function(x){return x.id===id})[0];return q?q.n:id});
+    parts.push('You are curious about: '+qnames.join(', ')+'.')}
+  else{var d5=S.a.d5;if(d5&&d5.length){var picks=d5.map(function(i){return DIRQ[4].o[i][0]}).filter(function(l){return !/Not Sure yet|Not interested/.test(l)});
+    if(picks.length)parts.push('You are curious about: '+picks.join(', ')+'.')}}
   if(sn.tip)parts.push(sn.tip);
   parts.push('This is a starting point, not a final decision — a career expert from Finishing School India can help you turn it into a concrete plan.');
   return parts.join(' ')}
@@ -419,6 +436,7 @@ M.areas=function(){var top=topAreas(),sel=S.sel.length?S.sel:(S.area?[S.area].co
    f:back('direction')+'<div class="r">'+(sel.length?'':'<span class="hint">Choose up to 2 areas to continue</span>')+btn('START MY CAREER DISCOVERY','startArea',{dis:!sel.length})+'</div>'}};
 
 function softTile(s,mark){return '<button type="button" class="logotile'+(mark?' mark':'')+'" data-act="sub" data-t="'+(s.kind)+'" data-k="'+s.id+'"><span class="lg"><img src="'+LOGO[s.id]+'" alt="'+esc(s.n)+' logo"></span><b>'+esc(s.short||s.n)+'</b></button>'}
+function qualTile(q,on,sug){return '<div class="qualtile'+(on?' sel':'')+'">'+(sug?'<span class="rec">SUGGESTED</span>':'')+'<button type="button" class="qualpick" data-act="qualsel" data-k="'+q.id+'" aria-pressed="'+on+'"><span class="check" aria-hidden="true"></span><span class="lg"><img src="'+LOGO[q.id]+'" alt="'+esc(q.n)+' logo"></span><b>'+esc(q.n.split(' ')[0])+'</b></button><button type="button" class="infoLink" data-act="sub" data-t="qual" data-k="'+q.id+'">Details →</button></div>'}
 var STEPS={A:['roadmap','skills','software','pgd'],D:['studies','quals']};
 function areaSteps(k){return STEPS[k]||['main']}
 M.area=function(){
@@ -437,7 +455,9 @@ M.area=function(){
     if(cur==='studies'){nextLabel='Next';
       b='<div class="grid g2"><div class="card"><h3>Possible study pathways</h3>'+ticks(D_PATHS)+'</div><div class="card"><h3>Before You Choose</h3>'+ticks(D_BEFORE)+'</div></div><div class="call"><b>A qualification alone does not guarantee a job, a visa or overseas employment.</b></div>'}
     if(cur==='quals'){var want=[];(S.a.d5||[]).forEach(function(i){var l=DIRQ[4].o[i][0];if(QUALMAP[l])want=want.concat(QUALMAP[l]);if(i===6)want=QUALS.map(function(q){return q.id})});
-      b='<p class="quote">“'+INTRO_QUOTE+'”</p><h3 style="font-size:22px">Professional qualification awareness</h3><p class="muted small" style="margin-top:-8px">Tap a logo for scope, eligibility, duration, fees and career options.'+(want.length?' Qualifications you picked earlier are tagged.':'')+'</p><div class="grid g4">'+QUALS.map(function(q){return softTile(Object.assign({kind:'qual',short:q.n.split(' ')[0]},q),want.indexOf(q.id)>-1)}).join('')+'</div>'}
+      if(S.qualPick===null){S.qualPick=want.slice()}
+      var picked=S.qualPick;
+      b='<p class="quote">“'+INTRO_QUOTE+'”</p><h3 style="font-size:22px">Professional qualification awareness</h3><p class="muted small" style="margin-top:-8px">Tap a logo to select it — you can select as many as you like. Tap "Details" for scope, eligibility, duration, fees and career options.</p><div class="grid g4">'+QUALS.map(function(q){return qualTile(q,picked.indexOf(q.id)>-1,want.indexOf(q.id)>-1)}).join('')+'</div>'}
   }else if(k==='B'){b='<div class="grid g2"><div class="card"><h3>Interested in Finance &amp; Banking?</h3>'+ticks(B_DIR)+'</div><div class="card"><h3>Skills to build</h3>'+ticks(B_SK)+'</div></div><div class="call"><b>Your next step:</b> Compare banking examinations, finance-related qualifications and entry-level opportunities before choosing a path.</div>'}
   else if(k==='C'){b='<div class="grid g2"><div class="card"><h3>Possible career directions</h3>'+ticks(C_DIR)+'</div><div class="card"><h3>Skills to build</h3>'+ticks(C_SK)+'</div></div><div class="call"><b>Your next step:</b> Choose one area, complete a small practical project and explore internships or suitable entry-level roles.</div>'}
   else if(k==='E'){b='<div class="card"><h3>How to Build your International Careers</h3>'+ticks(E_DIR)+'</div>'}
@@ -500,7 +520,7 @@ function renderModal(){
 /* every answer stays editable right up until the enquiry is actually submitted —
    only then does the whole journey become a locked, view-only record */
 function readOnly(){return !!S.modal&&S.sent}
-var EDITABLE='[data-act=pick],[data-act=mind],[data-act=selarea],[data-act=cmp],[data-act=pathsel],input[data-f],select[data-f],textarea[data-idea]';
+var EDITABLE='[data-act=pick],[data-act=mind],[data-act=selarea],[data-act=cmp],[data-act=pathsel],[data-act=qualsel],input[data-f],select[data-f],textarea[data-idea]';
 function lockCompleted(mb){
   if(!mb)return;
   if(ok(1)){var nm=mb.querySelector('#l_name');if(nm){nm.readOnly=true;nm.classList.add('ro')}}   // the enquiry name comes from the completed profile
@@ -508,7 +528,8 @@ function lockCompleted(mb){
   [].forEach.call(mb.querySelectorAll(EDITABLE),function(el){if(el.tagName==='INPUT'||el.tagName==='TEXTAREA')el.readOnly=true;else el.disabled=true;el.classList.add('ro')});
   mb.insertAdjacentHTML('afterbegin','<div class="notice"><i>✓</i><span><b>Your enquiry has been submitted.</b> You can view your details and answers here, but they can no longer be changed.</span></div>');
 }
-function openScreen(name){S.modal=name;S.sub=null;renderModal();var nb=$('.mb');if(nb)nb.scrollTop=0;var h=$('#mt');if(h)h.focus({preventScroll:true})}
+function openScreen(name){if(!S.startedAt){S.startedAt=Date.now();save();var el=$('#elapsed');if(el){el.hidden=false;el.removeAttribute('aria-hidden')}}
+  S.modal=name;S.sub=null;renderModal();var nb=$('.mb');if(nb)nb.scrollTop=0;var h=$('#mt');if(h)h.focus({preventScroll:true})}
 function closeModal(){S.modal=null;S.sub=null;renderModal();render();if(lastFocus&&document.contains(lastFocus))lastFocus.focus();window.scrollTo({top:$('#journey')?$('#journey').offsetTop-12:0,behavior:'smooth'})}
 function render(){
   var started=ok(1),h=highest(),nxt=Math.min(h+1,7);
@@ -538,7 +559,7 @@ document.addEventListener('click',function(e){
   else if(a==='closesub'){S.sub=null;renderModal()}
   else if(a==='sub'){S.sub={t:t.dataset.t,k:t.dataset.k};renderModal();var d=$('.ov.top h2');if(d)d.focus&&d.setAttribute('tabindex','-1'),d.focus()}
   else if(a==='go'){openScreen(t.dataset.to)}
-  else if(readOnly()&&/^(pick|mind|selarea|cmp|pathsel)$/.test(a))return;
+  else if(readOnly()&&/^(pick|mind|selarea|cmp|pathsel|qualsel)$/.test(a))return;
   else if(a==='mind'){S.p.mind=t.dataset.v;save();renderModal()}
   else if(a==='submitProfile'){var p=S.p,fields=[['name',!p.name.trim()],['college',!p.college.trim()],['course',!p.course],['year',!p.year],['district',!p.district],['mindCard',!p.mind]],bad0=null;
     fields.forEach(function(f){var el=document.getElementById(f[0]);if(!el)return;el.classList.toggle('err',f[1]);if(f[1]&&!bad0)bad0=el});
@@ -556,6 +577,7 @@ document.addEventListener('click',function(e){
     else if(m==='connect')openScreen('enquiry')}
   else if(a==='selarea'){var k3=t.dataset.k,j3=S.sel.indexOf(k3);if(j3>-1)S.sel.splice(j3,1);else{if(S.sel.length===2)S.sel.shift();S.sel.push(k3)}renderModal()}
   else if(a==='pathsel'){S.pathPick=S.pathPick===t.dataset.k?null:t.dataset.k;save();renderModal()}
+  else if(a==='qualsel'){var k6=t.dataset.k;if(S.qualPick===null)S.qualPick=[];var j6=S.qualPick.indexOf(k6);if(j6>-1)S.qualPick.splice(j6,1);else S.qualPick.push(k6);save();renderModal()}
   else if(a==='startArea'){S.area=S.sel[0]||S.area;S.area2=S.sel[1]||null;S.aStep=0;finish(5);openScreen('area')}
   else if(a==='anext'){var st=areaSteps(S.area);if(S.aStep<st.length-1){S.aStep++;openScreen('area')}else{finish(6);openScreen('connect')}}
   else if(a==='aback'){S.aStep=Math.max(0,S.aStep-1);openScreen('area')}
@@ -584,6 +606,11 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Tab'&&S.modal){var ov=document.querySelectorAll('.ov');var top=ov[ov.length-1];var f=top.querySelectorAll('button:not([disabled]),a[href],input,select,textarea,[tabindex="-1"]');var els=[].filter.call(f,function(x){return x.offsetParent!==null&&x.tabIndex>=0});if(!els.length)return;var first=els[0],last=els[els.length-1];
     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}else if(!top.contains(document.activeElement)){e.preventDefault();first.focus()}}});
 document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('#themeBtn')){var r=document.documentElement,cur=r.getAttribute('data-theme');var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.setAttribute('data-theme',dark?'light':'dark')}});
+function fmtElapsed(ms){var s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60,mm=h?(m<10?'0'+m:''+m):''+m;
+  return (h?h+':':'')+mm+':'+(ss<10?'0':'')+ss}
+function tickElapsed(){if(!S.startedAt)return;var el=$('#elapsedTxt');if(el)el.textContent=fmtElapsed(Date.now()-S.startedAt)}
+if(S.startedAt){var elBadge=$('#elapsed');if(elBadge){elBadge.hidden=false;elBadge.removeAttribute('aria-hidden')}}
+tickElapsed();setInterval(tickElapsed,1000);
 render();
 track('visit');
 </script>
